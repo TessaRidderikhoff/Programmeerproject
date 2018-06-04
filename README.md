@@ -6,7 +6,7 @@ A lot of people all over the world struggle with overweight and obesity, which l
 ### Solution
 I would like to visualize the difference between countries in obesity prevalence, and highlight the differences between those countries on the subject of diets, income, education, exercise and so forth, as well as the implications obesity has.
 
-![](sketch/sketch.jpg)
+![](sketch/sketch.png)
 
 The data visualisation will include:
 - A map of the world that colour-codes the percentage of obesity in that country. (MVP)
