@@ -6,11 +6,12 @@ For the world map, I will need data on the percentage of obese people per countr
 The data will be transformed as such:
 
 | Country | 1975 | 1976 | 1977 | 1978 | etc. |
+| ------------- |:-------------:| -----:|
 | Afghanistan | ... | ... | ... | ... | |
 | Albania | ... | ... | ... | ... | |
 | Algeria | ... | ... | ... | ... | | 
 
-| Tables        | Are           | Cool  |
+| Country       | 1975          | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
 | col 2 is      | centered      |   $12 |
