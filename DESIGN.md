@@ -22,3 +22,36 @@ After, a legend will be created to explain the colours used.
 
 There will also be another function, the updateMap function, which will be called whenever the slider is moved to another year, or the user wants to see the obesity percentage of the males or females only. This function only changes the colours of the countries on the map, while the map and legend will remain unchanged.
 
+## Scatterplot
+### Data
+- Country-data (dots)
+	- Obesity percentage (size of dots)
+	- Continent of country (colour of dots)
+
+- Drivers-data (x-axis)
+	- Average education
+	- Average GDP
+	- Average number of calories eaten
+	- Percentage of people who exercise suffiently
+
+- Impact data (y-axis)
+	- Diabetes percentage
+	- Heart- and vascular disease percentage
+	- High blood pressure percentage
+	- Cancer percentage
+
+Format of datasets (except continent of countries):
+
+Country | 1975 | 1976 | 1977 | etc.
+--- | --- | --- | --- | ---
+Afghanistan | ... | ... | ... | ...
+Albania | ... | ... | ... | ...
+Algeria | ... | ... | ... | ...
+etc. | ... | ... | ... | ...
+
+### Function
+First, a function createScatter is needed, that creates a scatterplot using the default values for the axes (for example, education on x-axis and diabetes on y-axis).
+
+This function will first plot the data, then create a legend displaying the colours of the different continents.
+
+When the slider is moved, or different variables for the x- or y-axis are selected, an updateScatter function is called, that relocates the dots on the scatterplot according to the new data.
