@@ -22,6 +22,11 @@ After, a legend will be created to explain the colours used.
 
 There will also be another function, the updateMap function, which will be called whenever the slider is moved to another year, or the user wants to see the obesity percentage of the males or females only. This function only changes the colours of the countries on the map, while the map and legend will remain unchanged.
 
+When hovered over a country, the opacity of the other countries will decrease and a tooltip will be shown, displaying the name of the country and the percentage of obesity. The scatterplot will also show the dot representing the country by decreasing the opacity of the other dots.
+
+When clicked on a country, the sankey diagram will be updated.
+
+
 ## Scatterplot
 ### Data
 - Country-data (dots)
@@ -55,6 +60,10 @@ First, a function createScatter is needed, that creates a scatterplot using the 
 This function will first plot the data, then create a legend displaying the colours of the different continents.
 
 When the slider is moved, or different variables for the x- or y-axis are selected, an updateScatter function is called, that relocates the dots on the scatterplot according to the new data.
+
+When hovered over a dot, the opacity of the other dots will decrease and a tooltip will appear, clarifying the country the dot represents, the percentage of obesity in that country (represented by size of dot) and the x and y values. This country will also be the only country on the world map whose opacity is not temporarely decrease as well, clarifying the location of the country.
+
+When clicked on a dot, the sankey diagram will be updated.
 
 ## Sankey-diagram
 ### Data
@@ -103,3 +112,17 @@ Albania | Type food 2 | ... | ... | ... | ...
 Albania | Type food 3 | ... | ... | ... | ...
 Albania | etc. | ... | ... | ... | ...
 etc. | ... | ... | ... | ... | ...
+
+### Functions
+The createSankey function will be activated when the user clicks on a country in either the world map or on the scatterplot, and check if a sankey graph already exists, and if it doesn't it will create the sankey. If it does it will only update the graph to the data of the selected country. 
+
+It will first use the first dataset of the calories eaten in a country on average, and this will determine the length of the initial bar. The dataset containing how many calories are eaten in each food group will be used to create the next bars, which in total add up to the total amount of calories. If available, the types of food of that food group will be displayed as bars next to the food group.
+
+The sankey diagram itself can be created by using plotly.js for example. Examples of this can be found on https://plot.ly/javascript/sankey-diagram/.
+
+When another country is chosen, the size of all the elements of the sankey diagram will be updated to the selected data. 
+
+When hovered over a bar in the sankey diagram, the opacity of the rest of the diagram will decrease and a tooltip will appear, displaying the exact value of the data.
+
+
+
