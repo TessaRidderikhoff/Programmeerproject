@@ -34,12 +34,24 @@
 
   </head>
   <body>
-    <svg width = "100" height = "30" class = "timesvg"></svg>
+    <svg width = "600" height = "50" style = "position: absolute; left: 30px; top: 0px;" class = "timesvg">
+        <div class="genderbox" style = "position: absolute; left: 450px; top: 15px">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" value = "Both" onchange = updateMapGender(value) checked>
+          <label class="form-check-label" for="exampleCheck1">Both</label>
+        </div>
+        <div class="genderbox" style = "position: absolute; left: 500px; top: 15px">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" value = "Female" onchange = updateMapGender(value)>
+          <label class="form-check-label" for="exampleCheck1">Female</label>
+        </div>
+        <div class="genderbox" style = "position: absolute; left: 560px; top: 15px">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" value = "Male" onchange = updateMapGender(value)>
+          <label class="form-check-label" for="exampleCheck1">Male</label>
+        </div>
+    </svg>
 
-    <svg width = "600" height = "300" class = "mapsvg"></svg>
+    <svg width = "600" height = "300" style = "position: absolute; left: 30px; top: 50px;" class = "mapsvg"></svg>
 
-    <svg width = "600" height = "300" class = "scattersvg"></svg>
-
-    <svg width = "800" height = "300" class = "sankeysvg"></svg>    
+    <svg width = "600" height = "300" style = "position: absolute; left: 630px; top: 50px;" class = "scattersvg"></svg>
+    <svg width = "800" height = "300" style = "position: absolute; left: 30px; top: 350px;" class = "sankeysvg"></svg>    
   </body>
 </html>

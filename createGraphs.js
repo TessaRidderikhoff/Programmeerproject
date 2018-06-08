@@ -4,7 +4,11 @@ window.onload = function() {
 	d3.queue()
 		.defer(d3.json, "sources/custom.geo.json")
 		.defer(d3.json, "sources/AdultsObese.json")
+		.defer(d3.json, "sources/FemalesObese.json")
+		.defer(d3.json, "sources/MalesObese.json")
 		.awaitAll(createMap);
+
+	createSlider();
 }
 
 function createMap(error, loadedJSONs) {
@@ -12,6 +16,8 @@ function createMap(error, loadedJSONs) {
 
 	geojson = loadedJSONs[0]
 	adultsObese = loadedJSONs[1]
+	femalesObese = loadedJSONs[2]
+	malesObese = loadedJSONs[3]
 
 	// set default year
 	year = "y2016"
@@ -158,6 +164,7 @@ function createMap(error, loadedJSONs) {
 			mapsvg.selectAll(".country")
 				.transition()
 				.style("opacity", 0.3)
+				.style("stroke", "white")
 			mapsvg.selectAll("." + this.getAttribute('class'))
 				.filter(function() {
 					return self != this
@@ -165,7 +172,7 @@ function createMap(error, loadedJSONs) {
 				.transition()
 				.style("opacity", 1)
 				.style("stroke", "black")
-				.style("stroke-width", 0.2)
+				.style("stroke-width", 0.15)
 		})
 		.on("mouseout", function() {
 			mapsvg.selectAll(".country")
@@ -206,5 +213,240 @@ function updateMap(year){
 			})
 		}
 }
+
+function updateMapGender(gender) {
+	// boxes = d3.selectAll(".genderbox")
+	// console.log(boxes)
+
+	// for (i = 0; i < 3; i++) {
+	// 	console.log(boxes[i].value)
+	// }
+
+	if (gender == "Female") {
+		dataset = femalesObese;
+	}
+	else if (gender == "Male") {
+		dataset = malesObese;
+	}
+	else if (gender == "Both") {
+		dataset = adultsObese;
+	}
+
+	countries
+		.attr("fill", "rgb(211, 211, 211)")
+
+	for (i = 0; i < dataset.length; i++) {
+		// determine id of country in map
+		countryId = "#" + dataset[i].Country
+
+		// remove spaces from id
+		countryId = countryId.replace(/\s+/g, "");
+
+		// select this country in map
+		d3.selectAll(countryId)
+			.attr("fill", function() {
+				// determine obesity score
+				yearScore = dataset[i][year]
+
+				// fill if country has obesity data
+				if (yearScore) {
+					// determine the level of obesity
+					colourScheme = Math.floor(yearScore / 5)
+					
+					// colour country according to how obese the population is
+					return "rgb(255," + (200 - (colourScheme * 25)) + ", " + (200 - (colourScheme * 25)) + ")" 
+				}
+			})
+			// give country the obesity score as attribute
+			.attr("obesity", yearScore)
+			.attr("class", function() {
+				return "index" + colourScheme + " country"
+			})
+		}
+}
+
+function createSlider() {
+
+
+	timeWidth = 200
+	timeHeight = 50
+	margin = {right: 20, left: 20}
+
+    var svg = d3.select(".timesvg")
+    	// .append("text")
+
+    slider1 = new simpleSlider();
+
+    yearInfo = svg.append("text")
+		.attr("x", 180)
+		.attr("y", timeHeight/2 + 3)
+		.attr("class", "yearInfo")
+		.text("Year: 2015")
+
+    var xScale = d3.scale.linear()
+		.domain([0, 1])
+		.range([1975, 2015])
+
+    slider1.width(150).x(10).y(timeHeight/2).value(1.0).event(function(){
+    	selectedyear = Math.round(xScale(slider1.value()));
+    	year = "y" + selectedyear
+        yearInfo
+        	.text("Year: " + selectedyear);
+
+        updateMap(year);
+    });
+
+
+	
+
+    svg.call(slider1);
+}
+
+// source: https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01
+function simpleSlider () {
+
+    var width = 100,
+        value = 0.5, /* Domain assumes to be [0 - 1] */
+        event,
+        x = 0,
+        y = 0;
+
+    function slider (selection) {
+
+        //Line to represent the current value
+        var valueLine = selection.append("line")
+            .attr("x1", x)
+            .attr("x2", x + (width * value))
+            .attr("y1", y)
+            .attr("y2", y)
+            .style({stroke: "red",
+                    "stroke-linecap": "round",
+                    "stroke-width": 6 });
+
+        //Line to show the remaining value
+        var emptyLine = selection.append("line")
+            .attr("x1", x + (width * value))
+            .attr("x2", x + width)
+            .attr("y1", y)
+            .attr("y2", y)
+            .style({
+                "stroke": "#ECECEC",
+                "stroke-linecap": "round",
+                "stroke-width": 6
+            });
+
+        var drag = d3.behavior.drag().on("drag", function() {
+            var newX = d3.mouse(this)[0];
+
+            if (newX < x)
+                newX = x;
+            else if (newX > x + width)
+                newX = x + width;
+
+            value = (newX - x) / width;
+            valueCircle.attr("cx", newX);
+            valueLine.attr("x2", x + (width * value));
+            emptyLine.attr("x1", x + (width * value));
+
+            if (event)
+                event();
+
+            d3.event.sourceEvent.stopPropagation();
+        })
+
+        //Draggable circle to represent the current value
+        var valueCircle = selection.append("circle")
+            .attr("cx", x + (width * value))
+            .attr("cy", y)
+            .attr("r", 8)
+            .style({
+                "stroke": "black",
+                "stroke-width": 1.0,
+                "fill": "white"
+            })
+            .call(drag);
+    }
+
+
+    slider.x = function (val) {
+        x = val;
+        return slider;
+    }
+
+    slider.y = function (val) {
+        y = val;
+        return slider;
+    }
+
+    slider.value = function (val) {
+        if (val) {
+            value = val;
+            return slider;
+        } else {
+            return value;
+        }
+    }
+
+    slider.width = function (val) {
+        width = val;
+        return slider;
+    }
+
+    slider.event = function (val) {
+        event = val;
+        return slider;
+    }
+
+    return slider;
+}
+
+
+
+
+	// var slider = d3.slider().axis(true)
+
+	// var slider = timesvg.append("g")
+	// 	.attr("class", "slider")
+	// 	.attr("transform", "translate(" + margin.left + "," + timeHeight/2 + ")");
+
+	// slider.append("line")
+	// 	.attr("class", "track")
+	// 	.attr("x1", xScale.range()[0])
+	// 	.attr("x2", xScale.range()[1])
+	// 	.select(function() {
+	// 		return this.parentNode.appendChild(this.cloneNode(true)); 
+	// 	})
+	// 	.attr("class", "track-overlay")
+	// 	.call(d3.behavior.drag())
+	// 		.on("start.interrupt", function() {
+	// 			slider.interrupt();
+	// 		})
+	// 		.on("start drag", function() {
+	// 			updateSlider(xScale.invert(d3.event.xScale));
+	// 		})
+
+	// slider.insert("g", ".track-overlay")
+	//     .attr("class", "ticks")
+	//     .attr("transform", "translate(0," + 18 + ")")
+	//   .selectAll("text")
+	//   .data(xScale.ticks(10))
+
+	// var handle = slider.insert("circle", ".track-overlay")
+	//     .attr("class", "handle")
+	//     .attr("r", 9);
+
+	// slider.transition() // Gratuitous intro!
+	//     .duration(750)
+	//     .tween("hue", function() {
+	//       var i = d3.interpolate(0, 70);
+	//       return function(t) { updateSlider(i(t)); };
+	//     });
+
+	// function updateSlider(loc) {
+	// 	handle.attr("cx", xScale(loc))
+	// }
+
+
+
 
 // =VERSCHUIVING($D$2;(RIJ()-2)*37;0)

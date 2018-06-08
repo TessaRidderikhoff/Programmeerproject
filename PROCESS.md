@@ -15,3 +15,14 @@
 
 ### To do
 - Make update function for male and female statistics only
+
+## Friday 8-6
+
+### Done
+- Created slider over the years, works, but I transform the values of the slider instead of changing the values in the first place
+- Created checkboxes for gender information, but they work as buttons as the moment instead of checkboxes
+- I gave all svg's standard locations
+
+### To do
+- Use the checkboxes as checkboxes: show only the data of the boxes that are checked
+- I would prefer not to use a "both" checkbox, but when male and female are both selected that the all-adults dataset is used
