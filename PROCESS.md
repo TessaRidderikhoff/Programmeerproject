@@ -37,3 +37,15 @@
 - Choose what variables are shown on the x-axis and y-axis.
 - There are problems with the loading of the data, sometimes the map suddenly becomes black. It also seems that the map sometimes does not show the correct values, possibly of the wrong year.
 
+## Tuesday 13-6
+
+### Done
+- The slider can now also update the scatterplot
+- The x-axis is a dropdown, but does not do anything yet
+- Fixed the data loading problem of the world map (it was because the years were not selected correctly)
+
+### To do
+- Crosshair for the scatterplot, so the tooltip doesn't have to hold so much information
+- Dropdown for the y-axis
+- Update the scatterplot for different datasets
+

@@ -20,11 +20,11 @@ function createSlider() {
 
     slider1.width(150).x(10).y(timeHeight/2).value(1.0).event(function(){
     	selectedyear = Math.round(xScale(slider1.value()));
-    	year = "y" + selectedyear
+    	year = selectedyear
         yearInfo
         	.text("Year: " + selectedyear);
 
-        updateMap(year);
+        updateYear(year);
     });
 
 
@@ -129,4 +129,9 @@ function simpleSlider () {
     }
 
     return slider;
+}
+
+function updateYear(year) {
+    updateMap(year);
+    updateScatterYear(year);
 }

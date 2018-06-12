@@ -2,7 +2,8 @@ function createMap() {
 
 
 	// set default year
-	var year = "y2016"
+	// var yearMap = "y2015"
+	var year = "y2015"
 
 	// set map properties
 	margin = {top: 20, right: 20, bottom: 20, left: 20}
@@ -44,10 +45,12 @@ function createMap() {
 		// colour country grey in case the country is not in obesity dataset
 		.attr("fill", "rgb(211, 211, 211)")
 
+	mapData = adultsObese;
 
-	for (i = 0; i < adultsObese.length; i++) {
+
+	for (i = 0; i < mapData.length; i++) {
 		// determine id of country in map
-		countryId = "#" + adultsObese[i].Country
+		countryId = "#" + mapData[i].Country
 
 		// remove spaces from id
 		countryId = countryId.replace(/\s+/g, "");
@@ -56,7 +59,7 @@ function createMap() {
 		d3.selectAll(countryId)
 			.attr("fill", function() {
 				// determine obesity score
-				yearScore = adultsObese[i][year]
+				yearScore = mapData[i][year]
 
 				// fill if country has obesity data
 				if (yearScore) {
@@ -164,9 +167,12 @@ function createMap() {
 }
 
 function updateMap(year){
-	for (i = 0; i < adultsObese.length; i++) {
+
+	yearMap = "y" + year;
+
+	for (i = 0; i < mapData.length; i++) {
 		// determine id of country in map
-		countryId = "#" + adultsObese[i].Country
+		countryId = "#" + mapData[i].Country
 
 		// remove spaces from id
 		countryId = countryId.replace(/\s+/g, "");
@@ -175,7 +181,7 @@ function updateMap(year){
 		d3.selectAll(countryId)
 			.attr("fill", function() {
 				// determine obesity score
-				yearScore = adultsObese[i][year]
+				yearScore = mapData[i][yearMap]
 
 				// fill if country has obesity data
 				if (yearScore) {
@@ -195,6 +201,9 @@ function updateMap(year){
 }
 
 function updateMapGender(gender) {
+
+	// var year = "y" + year
+
 	boxes = d3.selectAll(".form-check-input")
 	checkedlist = [];
 
@@ -203,13 +212,13 @@ function updateMapGender(gender) {
 	}
 
 	if (checkedlist[0] == true && checkedlist[1] == false) {
-		dataset = femalesObese;
+		mapData = femalesObese;
 	}
 	else if (checkedlist[0] == false && checkedlist[1] == true) {
-		dataset = malesObese;
+		mapData = malesObese;
 	}
 	else if (checkedlist[0] == true && checkedlist[1] == true) {
-		dataset = adultsObese;
+		mapData = adultsObese;
 	}
 	else {
 		countries.attr("fill", "rgb(211, 211, 211)");
@@ -219,9 +228,11 @@ function updateMapGender(gender) {
 	countries
 		.attr("fill", "rgb(211, 211, 211)")
 
-	for (i = 0; i < dataset.length; i++) {
+	console.log(mapData, "HA:LL:O")
+
+	for (i = 0; i < mapData.length; i++) {
 		// determine id of country in map
-		countryId = "#" + dataset[i].Country
+		countryId = "#" + mapData[i].Country
 
 		// remove spaces from id
 		countryId = countryId.replace(/\s+/g, "");
@@ -230,7 +241,10 @@ function updateMapGender(gender) {
 		d3.selectAll(countryId)
 			.attr("fill", function() {
 				// determine obesity score
-				yearScore = dataset[i][year]
+				console.log(year)
+				yearScore = mapData[i]["y" + year]
+				console.log(mapData[i])
+				console.log(yearScore)
 
 				// fill if country has obesity data
 				if (yearScore) {

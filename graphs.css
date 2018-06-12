@@ -35,6 +35,18 @@ body {
 	stroke: black;
 }
 
+.xSelect {
+  z-index: 1;
+  position: absolute;
+  left: 800px;
+  top: 330px;
+}
+
+.scattertitle {
+  font-size: 30px;
+  color: grey;
+}
+
 .track,
 .track-inset,
 .track-overlay {
