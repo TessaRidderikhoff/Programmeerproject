@@ -26,3 +26,14 @@
 ### To do
 - Use the checkboxes as checkboxes: show only the data of the boxes that are checked
 - I would prefer not to use a "both" checkbox, but when male and female are both selected that the all-adults dataset is used
+
+## Monday 12-6
+
+### Done
+- Made checkboxes that work: there are now a female and male checkbox, and if both checked the world map shows the average for all adults.
+- Made scatterplot, only for calories eaten on x-axis, and cardiovascular diseases on y-axis. 
+
+### To do
+- Choose what variables are shown on the x-axis and y-axis.
+- There are problems with the loading of the data, sometimes the map suddenly becomes black. It also seems that the map sometimes does not show the correct values, possibly of the wrong year.
+

@@ -13,6 +13,28 @@ body {
   font: 10px sans-serif;
 }
 
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.country {
+	stroke-width: 0.05;
+	stroke: white;
+}
+
+.country:hover {
+	stroke-width: 0.2;
+	stroke: black;
+}
+
 .track,
 .track-inset,
 .track-overlay {
