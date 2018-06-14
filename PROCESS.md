@@ -27,7 +27,7 @@
 - Use the checkboxes as checkboxes: show only the data of the boxes that are checked
 - I would prefer not to use a "both" checkbox, but when male and female are both selected that the all-adults dataset is used
 
-## Monday 12-6
+## Monday 11-6
 
 ### Done
 - Made checkboxes that work: there are now a female and male checkbox, and if both checked the world map shows the average for all adults.
@@ -37,7 +37,7 @@
 - Choose what variables are shown on the x-axis and y-axis.
 - There are problems with the loading of the data, sometimes the map suddenly becomes black. It also seems that the map sometimes does not show the correct values, possibly of the wrong year.
 
-## Tuesday 13-6
+## Tuesday 12-6
 
 ### Done
 - The slider can now also update the scatterplot
@@ -49,3 +49,23 @@
 - Dropdown for the y-axis
 - Update the scatterplot for different datasets
 
+## Wednesday 13-6
+
+### Done
+- Made functional dropdowns for x- and y-axis that can change the axis-variables
+- Created crosshair to make the values clearer
+
+### To do
+- When a dot is hovered over in the scatterplot, show the country that is corresponds to by lowering the opacity of the other country
+- And vice versa
+- Make the axes fixed
+- Not all datasets have all years available, and there is a problem since diabetes data is only of 2015 but suffiently active data is only of 2010.
+
+## Thursday 14-6
+
+### Done 
+- Interactivity between map and scatterplot by lowering opacity of non-selected countries.
+- Fixed axes so they don't change for every year.
+
+### To do
+- On click of country: create sankey diagram.

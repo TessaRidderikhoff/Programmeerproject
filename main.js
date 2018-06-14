@@ -8,6 +8,12 @@ window.onload = function() {
 		.defer(d3.json, "sources/MalesObese.json")
 		.defer(d3.json, "sources/Calories.json")
 		.defer(d3.json, "sources/CardiovascularDeaths.json")
+		.defer(d3.json, "sources/GDP.json")
+		.defer(d3.json, "sources/InsuffientlyActive.json")
+		.defer(d3.json, "sources/MeanYearsOfSchooling.json")
+		.defer(d3.json, "sources/Diabetes2015.json")
+		.defer(d3.json, "sources/HighBloodPressure.json")
+		.defer(d3.json, "sources/CancerPrevalence.json")
 		.awaitAll(main);
 }
 
@@ -20,6 +26,12 @@ function main (error, loadedJSONs) {
 	malesObese = loadedJSONs[3]
 	caloriesData = loadedJSONs[4]
 	cardiovascData = loadedJSONs[5]
+	GDP = loadedJSONs[6]
+	insuffientlyActive = loadedJSONs[7]
+	meanYearsOfSchooling = loadedJSONs[8]
+	diabetes = loadedJSONs[9]
+	highBloodPressure = loadedJSONs[10]
+	cancer = loadedJSONs[11]
 
 	createMap();
 	createSlider();

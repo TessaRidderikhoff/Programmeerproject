@@ -13,8 +13,6 @@ function createScatter() {
 
 	year = 2013
 	sizeData = adultsObese;
-	xData = caloriesData;
-	yData = cardiovascData;
 
 	var scatterTitle = scattersvg
 		.append("text")
@@ -23,26 +21,6 @@ function createScatter() {
 		.attr("y", margin.top)
 		.style("fill", "gray")
 		.text("Year " + year)
-
-	xDataList = {};
-
-	for (i = 0; i < xData.length; i++) {
-		// console.log(xData[i]["Year"])
-		if (xData[i]["Year"] == year) {
-			countryXname = xData[i]["Entity"].replace(/\s+/g, "");
-			xDataList[countryXname] = xData[i]["Total"]
-			}
-
-		}
-
-	yDataList = {};
-
-	for (i = 0; i < yData.length; i++) {
-		if (yData[i]["Year"] == year) {
-			countryYname = yData[i]["Entity"].replace(/\s+/g, "");
-			yDataList[countryYname] = yData[i]["Cardiovascular deaths / 100,000"]
-		}
-	}
 
 	dots = scattersvg.selectAll(".dataPoints")
 		.data(sizeData)
@@ -58,99 +36,24 @@ function createScatter() {
 		.attr('class', 'd3-tip')
 		.offset([-10, 0])
 		.html(function(d) {
-			console.log(d["y2016"])
 			return "<strong>Country: </strong> <span>" + d["Country"] + 
 			"<br> <strong> Percentage obesity: </strong> <span>" +
 			d["y" + year] 
-			+ "<br> <strong> Calories: </strong> <span>"+ 
-			xDataList[d["Country"].replace(/\s+/g, "")] + 
-			"<br> <strong> Cardiovascular deaths / 100,000: </strong> <span>" +
-			yDataList[d["Country"].replace(/\s+/g, "")]
 		})
+		.style("z-index", 2)
 
 	// call the tooltip
 	scattersvg.call(dotTip);
 
-	
-
-	var xScale = d3.scale.linear()
-		.domain([1500, 4000])
-		.range([margin.left, scatterWidth - margin.right])
-
-	var xAxis = d3.svg.axis()
-		.scale(xScale)
-		.orient("bottom")
-		.tickSize(0)
-
-	scattersvg.append("g")
+	xAxisG = scattersvg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0, " + (scatterHeight - margin.bottom) + ")")
-        .call(xAxis)
 
 
-	var yScale = d3.scale.linear()
-		.domain([1000, 0])
-		.range([margin.top, scatterHeight - margin.bottom])
-
-
-	var yAxis = d3.svg.axis()
-		.scale(yScale)
-		.orient("left")
-		.tickSize(0)
-
-	// verticalCrosshairs = scattersvg.selectAll(".xCrosshair")
-	// 	.data(sizeData)
-	// 	.enter()
-	// 	.append("line")
-	// 	.attr("class", "xCrosshair")
-	// 	.attr("x1", function(d) {
-	// 		return xScale(xDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("x2", function(d) {
-	// 		return xScale(xDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("y1", function(d) {
-	// 		return yScale(yDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("y2", scatterHeight - margin.bottom)
-	// 	.attr("stroke-width", 0.5)
-	// 	.attr("stroke", "gray")
-	// 	.style("opacity", 0)
-
-	// horizontalCrosshairs = scattersvg.selectAll(".yCrosshair")
-	// 	.data(sizeData)
-	// 	.enter()
-	// 	.append("line")
-	// 	.attr("class", "yCrosshair")
-	// 	.attr("x1", function(d) {
-	// 		return xScale(xDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("x2", margin.left)
-	// 	.attr("y1", function(d) {
-	// 		return yScale(yDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("y2", function(d) {
-	// 		return yScale(yDataList[d["Country"].replace(/\s+/g, "")])
-	// 	})
-	// 	.attr("stroke-width", 0.5)
-	// 	.attr("stroke", "gray")
-	// 	.style("opacity", 0)
-
-	scattersvg.append("g")
+	yAxisG = scattersvg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + margin.left + ", 0)")
-        .call(yAxis)
-
-    // y-axis title
-	scattersvg.append("g")
-            .append("text")
-            .attr("class", "axistitle")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 40)
-            .attr("x", -margin.left + 40)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Cardiovascular deaths / 100,000 people");
+        // .call(yAxis)
 
     var xVariables = ["Calories eaten on average (per day)", "Mean years of schooling", "Gross Domestic Product", "Percentage insuffiently exercise"]
  
@@ -161,7 +64,7 @@ function createScatter() {
     	.style("position", "absolute")
     	.style("left", "800px")
     	.style("top", "330px")
-    	.on("change", updateScatter);
+    	.on("change", updateVariableScatter);
 
     xOptions = xDropdown
     	.selectAll("option")
@@ -172,37 +75,37 @@ function createScatter() {
     		return d;
     	});
 
+    var yVariables = ["Diabetes prevalence", "Cardiovascular deaths / 100,000 people", "High blood pressure prevalence", "Cancer prevalence"]
+
+    yDropdown = d3.select("body")
+    	.append("select")
+    	.attr("class", "ySelect")
+    	.style("z-index", 1)
+    	.style("position", "absolute")
+    	.style("left", "670px")
+    	.style("top", "50px")
+    	.on("change", updateVariableScatter);
+
+    yOptions = yDropdown
+    	.selectAll("option")
+    	.data(yVariables)
+    	.enter()
+    	.append("option")
+    	.text(function(d) {
+    		return d;
+    	});
+
 	sizeScale = d3.scale.linear()
 		.domain([0, 100])
 		.range([1, 15])
 
-
+	updateVariableScatter();
 
 	for (i = 0; i < sizeData.length; i++) {
 		countryname = sizeData[i]["Country"].replace(/\s+/g, "")
 		countryId = "#" + "scatter" + countryname;
 
 		d3.selectAll(countryId)
-			.attr("cx", function() {
-				if (xDataList[countryname]) {
-					return xScale(xDataList[countryname])
-				}
-				else {
-					return -10
-				}
-			})
-			.attr("cy", function() {
-				if (yDataList[countryname]) {
-					return yScale(yDataList[countryname])
-				}
-				else {
-					return -10
-				}
-			})
-			.attr("r", function(d) {
-				sizeYear = "y" + year
-				return sizeScale(d[sizeYear])
-			})
 			.style("fill", function(d) {
 				if (d["Continent"] == "Africa") {
 					return c10(0)
@@ -240,6 +143,52 @@ function createScatter() {
 					})
 					.style("opacity", 0.2)
 
+				selectedcircle = d3.select(self);
+
+				horizontalCrosshair = scattersvg
+					.append("line")
+					.attr("class", "xCrosshair crosshair")
+					.attr("x1", function(d) {
+						return selectedcircle.attr("cx");
+					})
+					.attr("x2", function(d) {					
+						return selectedcircle.attr("cx");
+					})
+					.attr("y1", scatterHeight - margin.bottom)
+					.attr("y2", function(d) {
+						return selectedcircle.attr("cy");
+					})
+					.style("stroke-width", 0.5)
+					.style("stroke", "gray")
+
+				verticalCrosshair = scattersvg
+					.append("line")
+					.attr("class", "yCrosshair crosshair")
+					.attr("x1", function(d) {
+						return selectedcircle.attr("cx");
+					})
+					.attr("x2", function(d) {					
+						return margin.left;
+					})
+					.attr("y1", function(d) {
+						return selectedcircle.attr("cy");
+					})
+					.attr("y2", function(d) {
+						return selectedcircle.attr("cy");
+					})
+					.style("stroke-width", 0.5)
+					.style("stroke", "gray")
+
+				dotID = selectedcircle.attr("id").split("scatter")
+
+				d3.selectAll(".country")
+					.style("opacity", 0.3)
+
+				d3.selectAll("#" + dotID[1])
+					.style("opacity", 1)
+					.style("stroke", "black")
+					.style("stroke-width", 0.15)
+
 			})
 			.on("mouseout", function(d) {
 				dotTip.hide(d);
@@ -248,8 +197,13 @@ function createScatter() {
 					.style("opacity", 1)
 					.style("stroke-width", 0)
 
-				// d3.selectAll(".xCrosshair")
-				// 	.style("opacity", 1)
+				d3.selectAll(".crosshair")
+					.remove()
+
+				d3.selectAll(".country")
+					.style("opacity", 1)
+					.style("stroke", "white")
+					.style("stroke-width", 0.05)
 			})
 	}
 
@@ -290,12 +244,14 @@ function createScatter() {
 				.style("opacity", 1)
 				.style("stroke", "black")
 				.style("stroke-width", 0.4)
+				.style("z-index", 1)
 		})
 		.on("mouseout", function(d) {
 			d3.selectAll(".dataPoints")
 				.transition()
 				.style("opacity", 1)
 				.style("stroke-width", 0)
+				.style("z-index", 0)
 		})
 
 	var legendText = scatterLegend.selectAll("text")
@@ -313,52 +269,205 @@ function createScatter() {
 		})
 }
 
-function updateScatter() {
-	selectXValue = d3.select('.xSelect').property('value')
+function updateVariableScatter() {
+	selectXValue = d3.select(".xSelect").property("value");
 
-	console.log(selectXValue)
-}
+	selectYValue = d3.select(".ySelect").property("value");
 
-function updateScatterYear(year) {
+	if (selectXValue == "Gross Domestic Product") {
+		xData = GDP;
+
+		xDataList = {};
+
+		for (i = 0; i < xData.length; i++) {
+			countryXname = xData[i]["Entity"].replace(/\s+/g, "");
+			xDataList[countryXname] = xData[i]["y" + year]
+		}
+
+		minX = 0;
+		maxX = 120000;
+	}
+
+	else if (selectXValue == "Percentage insuffiently exercise") {
+		xData = insuffientlyActive;
+
+		// only one year is available for this dataset
+		year = 2010;
+
+		xDataList = {};
+
+		for (i = 0; i < xData.length; i++) {
+			countryXname = xData[i]["Country"].replace(/\s+/g, "");
+			xDataList[countryXname] = xData[i]["y2010"]
+		}
+
+		minX = 0;
+		maxX = 70;
+	}
+
+	else if (selectXValue == "Mean years of schooling"){
+		xData = meanYearsOfSchooling;
+
+		while (year % 5 != 0) {
+			year -= 1;
+		}
+
+		xDataList = {};
+
+		for (i = 0; i < xData.length; i++) {
+			countryXname = xData[i]["Country"].replace(/\s+/g, "");
+			xDataList[countryXname] = xData[i]["y" + year]
+		}
+
+		minX = 0;
+		maxX = 14;
+	}
+
+	else if (selectXValue == "Calories eaten on average (per day)") {
+		xData = caloriesData;
+
+		if (year > 2013) {
+			year = 2013;
+		}
+
+		xDataList = {};
+
+		for (i = 0; i < xData.length; i++) {
+			if (xData[i]["Year"] == year) {
+				countryXname = xData[i]["Entity"].replace(/\s+/g, "");
+				xDataList[countryXname] = xData[i]["Total"]
+			}
+		}
+
+		minX = 1400;
+		maxX = 3800;
+
+	}
+
+		
+
+	if (selectYValue == "Diabetes prevalence") {
+		yData = diabetes;
+
+		if (year != 2015) {
+			year = 2015;
+			// updateVariableScatter();
+		}
+
+		yDataList = {};
+
+		for (i = 0; i < yData.length; i++) {
+			countryYname = yData[i]["Entity"].replace(/\s+/g, "");
+			yDataList[countryYname] = yData[i]["y" + year];
+		}
+
+		minY = 0;
+		maxY = 25;
+	}
+
+	else if (selectYValue == "Cardiovascular deaths / 100,000 people") {
+		yData = cardiovascData;
+
+		if (year < 1990) {
+			year = 1990;
+			updateVariableScatter();
+		}
+
+		yDataList = {};
+
+		for (i = 0; i < yData.length; i++) {
+			if (yData[i]["Year"] == year) {
+				countryYname = yData[i]["Entity"].replace(/\s+/g, "");
+				yDataList[countryYname] = yData[i]["Cardiovascular deaths / 100,000"]
+			}
+		}
+
+		minY = 0;
+		maxY = 1000;
+	}
+
+	else if (selectYValue == "High blood pressure prevalence") {
+		yData = highBloodPressure;
+
+		yDataList = {};
+
+		for (i = 0; i < yData.length; i++) {
+			if (yData[i]["Year"] == year) {
+				countryYname = yData[i]["Country/Region/World"].replace(/\s+/g, "");
+				yDataList[countryYname] = yData[i]["Prevalence raised blood pressure"]
+			}
+		}
+
+		minY = 0;
+		maxY = 0.5;
+	}
+
+	else if (selectYValue == "Cancer prevalence") {
+		yData = cancer;
+
+		if (year < 1990) {
+			year = 1990;
+			updateVariableScatter();
+		}
+
+		yDataList = {};
+
+		for (i = 0; i < yData.length; i++) {
+			if (yData[i]["Year"] == year) {
+				countryYname = yData[i]["Entity"].replace(/\s+/g, "");
+				yDataList[countryYname] = yData[i]["Cancer prevalence"]
+			}
+		}
+
+		minY = 0;
+		maxY = 1;		
+	}
+
+	// let xArr = Object.values(xDataList);
+	// let xMin = Math.min(...xArr);
+	// let xMax = Math.max(...xArr);
+
+	// let yArr = Object.values(yDataList);
+	// let yMin = Math.min(...yArr);
+	// let yMax = Math.max(...yArr);
+
+	var xScale = d3.scale.linear()
+		.domain([minX, maxX])
+		.range([margin.left, mapWidth - margin.right])
+
+	var xAxis = d3.svg.axis()
+		.scale(xScale)
+		.orient("bottom")
+		.tickSize(0)
+
+	xAxisG.call(xAxis);
+
+	var yScale = d3.scale.linear()
+		.domain([maxY, minY])
+		.range([margin.top, mapHeight - margin.bottom])
+
+	var yAxis = d3.svg.axis()
+		.scale(yScale)
+		.orient("left")
+		.tickSize(0)
+
+	yAxisG.call(yAxis);
 
 	d3.selectAll(".scattertitle")
 		.text("Year " + year)
 
-	xDataList = {};
+	updateScatter(xScale, yScale, xDataList, yDataList);
 
-	for (i = 0; i < xData.length; i++) {
-		if (xData[i]["Year"] == year) {
-			countryXname = xData[i]["Entity"].replace(/\s+/g, "");
-			xDataList[countryXname] = xData[i]["Total"]
-			}
+}
 
-		}
+function updateScatterYear(year) {
 
-	let xArr = Object.values(xDataList);
-	let xMin = Math.min(...xArr);
-	let xMax = Math.max(...xArr);
+	year = year;
 
-	yDataList = {};
+	updateVariableScatter();
+}
 
-	for (i = 0; i < yData.length; i++) {
-		if (yData[i]["Year"] == year) {
-			countryYname = yData[i]["Entity"].replace(/\s+/g, "");
-			yDataList[countryYname] = yData[i]["Cardiovascular deaths / 100,000"]
-		}
-	}
-
-	let yArr = Object.values(yDataList);
-	let yMin = Math.min(...yArr);
-	let yMax = Math.max(...yArr);
-
-	var xScale = d3.scale.linear()
-		.domain([1500, 4000])
-		.range([margin.left, mapWidth - margin.right])
-
-	var yScale = d3.scale.linear()
-		.domain([1000, 0])
-		.range([margin.top, mapHeight - margin.bottom])
-
+function updateScatter(xScale, yScale, xDataList, yDataList) {
 	noDataCountries = [];
 
 	for (i = 0; i < sizeData.length; i++) {
@@ -367,7 +476,6 @@ function updateScatterYear(year) {
 
 		
 		d3.selectAll(countryId)
-			.style("opacity", 1)
 			.attr("cx", function() {
 				if (xDataList[countryname]) {
 					return xScale(xDataList[countryname])
@@ -394,7 +502,6 @@ function updateScatterYear(year) {
 
 		for (i = 0; i < noDataCountries.length; i++) {
 			d3.selectAll(noDataCountries[i])
-				.style("opacity", 0)
+				.attr("r", 0);
 		}
-
 }

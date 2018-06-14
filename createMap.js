@@ -71,7 +71,10 @@ function createMap() {
 				}
 			})
 			// give country the obesity score as attribute
-			.attr("obesity", yearScore)
+			.attr("obesity", function(d) {
+				d.properties.obesity = yearScore;
+				return yearScore;
+			})
 			.attr("class", function() {
 				return "index" + colourScheme + " country"
 			})
@@ -83,7 +86,7 @@ function createMap() {
 			.html(function(d) {
 				return "<strong>Country: </strong> <span>" + d.properties.admin + 
 				"</span> <br> <strong> Percentage obesity: </strong> <span>" +
-				d3.select(this).attr('obesity')
+				d.properties.obesity
 			})
 
 		// call the tooltip
@@ -93,8 +96,40 @@ function createMap() {
 
 	// show the tooltip on mouseover (and hide after)
 	countries
-		.on("mouseover", countrytip.show)
-		.on("mouseout", countrytip.hide)
+		.on("mouseover", function(d) {
+			countrytip.show(d);
+
+			var self = this;
+
+			d3.selectAll(".country")
+				.filter(function() {
+					return self != this;
+				})
+				.style("opacity", 0.3);
+
+			selectedCountry = d3.select(self);
+
+			d3.selectAll("#" + selectedCountry.attr("id"))
+				.style("stroke", "black")
+				.style("stroke-width", 0.15);
+
+			d3.selectAll(".dataPoints")
+				.style("opacity", 0.2)
+
+			d3.selectAll("#scatter" + selectedCountry.attr("id"))
+				.style("opacity", 1)
+		})
+		.on("mouseout", function(d) {
+			countrytip.hide(d);
+
+			d3.selectAll(".country")
+				.style("opacity", 1)
+				.style("stroke", "white")
+				.style("stroke-width", 0.05);
+
+			d3.selectAll(".dataPoints")
+				.style("opacity", 1)
+		})
 
 
 	// create legend
@@ -156,6 +191,7 @@ function createMap() {
 				.style("opacity", 1)
 				.style("stroke", "black")
 				.style("stroke-width", 0.15)
+
 		})
 		.on("mouseout", function() {
 			mapsvg.selectAll(".country")
