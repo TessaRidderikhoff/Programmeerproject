@@ -69,3 +69,14 @@
 
 ### To do
 - On click of country: create sankey diagram.
+
+## Friday 15-6
+
+### Done
+- Preparing data for sankey diagram
+
+### To do
+- Scatterplot: legend for size dots
+- Scatterplot & map: labels for axes
+- Scatterplot & map: title
+- Sankey diagram
