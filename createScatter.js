@@ -133,6 +133,7 @@ function createScatter() {
 				return d["Continent"] + " dataPoints"
 			})
 			.on("mouseover", function(d) {
+
 				dotTip.show(d);
 
 				var self = this;
@@ -204,6 +205,10 @@ function createScatter() {
 					.style("opacity", 1)
 					.style("stroke", "white")
 					.style("stroke-width", 0.05)
+			})
+			.on("click", function(d) {
+				updateSankey(d["Country"], year);
+				return
 			})
 	}
 

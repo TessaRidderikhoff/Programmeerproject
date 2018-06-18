@@ -80,3 +80,15 @@
 - Scatterplot & map: labels for axes
 - Scatterplot & map: title
 - Sankey diagram
+
+## Monday 18-6
+
+### Done
+- Created sankey-diagram (calories --> different subgroups)
+- Started with sankey-diagram element from grains --> types of grains
+- Created title for diagram
+
+### To do
+- The "Calories" label on the sankey diagram should be in the middle
+- The initial bar of the diagram should be in the middle as well
+- Users should be able to click on certain food groups and then receive more information about the different foods in that food group (for example grain)

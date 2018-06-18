@@ -130,6 +130,11 @@ function createMap() {
 			d3.selectAll(".dataPoints")
 				.style("opacity", 1)
 		})
+		.on("click", function(d) {
+			console.log(year)
+			splitYear = year.split("y")
+			updateSankey(d.properties.admin, year.replace("y", ""))
+		})
 
 
 	// create legend

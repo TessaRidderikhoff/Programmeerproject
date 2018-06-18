@@ -14,6 +14,8 @@ window.onload = function() {
 		.defer(d3.json, "sources/Diabetes2015.json")
 		.defer(d3.json, "sources/HighBloodPressure.json")
 		.defer(d3.json, "sources/CancerPrevalence.json")
+		.defer(d3.json, "sources/FoodgroupCalories.json")
+		.defer(d3.json, "sources/CerealCalories.json")
 		.awaitAll(main);
 }
 
@@ -32,10 +34,13 @@ function main (error, loadedJSONs) {
 	diabetes = loadedJSONs[9]
 	highBloodPressure = loadedJSONs[10]
 	cancer = loadedJSONs[11]
+	foodgroupCalories = loadedJSONs[12]
+	cerealCalories = loadedJSONs[13]
 
 	createMap();
 	createSlider();
 	createScatter();
+	createSankey();
 }
 
 
