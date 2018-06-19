@@ -92,3 +92,18 @@
 - The "Calories" label on the sankey diagram should be in the middle
 - The initial bar of the diagram should be in the middle as well
 - Users should be able to click on certain food groups and then receive more information about the different foods in that food group (for example grain)
+
+## Tuesday 19-6
+
+### Done
+- Created sankey-diagram with additional information about grain and meat.
+- Created titles for each element of the diagram.
+- Improved visuals of the diagram (it was hard to make clear which bars can be pressed).
+
+### To do
+- Titles of element should be at the front (hard)
+- Different years are not updated, not sure why
+- Title is sometimes not entirely visible
+- It should be shown if no data is available, instead of doing nothing
+- Create another sankey diagram for comparison
+- Sometimes the tooltips are visible when the element itself is not --> fix that.

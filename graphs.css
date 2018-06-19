@@ -57,6 +57,34 @@ body {
   color: gray;
 }
 
+.thirdNode {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.secondNode {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.calRect {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.meatNode {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.grainsRect {
+  opacity: 1;
+}
+
+.meatRect {
+  opacity: 1;
+}
+
 .track,
 .track-inset,
 .track-overlay {

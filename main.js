@@ -16,6 +16,7 @@ window.onload = function() {
 		.defer(d3.json, "sources/CancerPrevalence.json")
 		.defer(d3.json, "sources/FoodgroupCalories.json")
 		.defer(d3.json, "sources/CerealCalories.json")
+		.defer(d3.json, "sources/meatPercentage.json")
 		.awaitAll(main);
 }
 
@@ -36,11 +37,13 @@ function main (error, loadedJSONs) {
 	cancer = loadedJSONs[11]
 	foodgroupCalories = loadedJSONs[12]
 	cerealCalories = loadedJSONs[13]
+	meatPercentage = loadedJSONs[14]
 
 	createMap();
 	createSlider();
 	createScatter();
-	createSankey();
+	createSankey("sankeysvg");
+	// createSankey("secondsankeysvg");
 }
 
 

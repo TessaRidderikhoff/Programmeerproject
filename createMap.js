@@ -133,7 +133,7 @@ function createMap() {
 		.on("click", function(d) {
 			console.log(year)
 			splitYear = year.split("y")
-			updateSankey(d.properties.admin, year.replace("y", ""))
+			updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
 		})
 
 

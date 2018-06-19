@@ -207,7 +207,7 @@ function createScatter() {
 					.style("stroke-width", 0.05)
 			})
 			.on("click", function(d) {
-				updateSankey(d["Country"], year);
+				updateSankey(d["Country"], year, "sankeysvg");
 				return
 			})
 	}
