@@ -52,7 +52,7 @@ body {
   color: gray;
 }
 
-.sankeytitle {
+.graphtitle {
   font-size: 30px;
   color: gray;
 }
@@ -118,4 +118,10 @@ body {
 
 .yearInfo {
 	font-size: 15px;
+}
+
+.button rect {
+  stroke: black;
+  stroke-width: 2px;
+  fill: lightblue;
 }

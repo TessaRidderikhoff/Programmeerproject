@@ -12,11 +12,11 @@ function createSlider() {
 		.attr("x", 180)
 		.attr("y", timeHeight/2 + 3)
 		.attr("class", "yearInfo")
-		.text("Year: 2015")
+		.text("Year: 2013")
 
     var xScale = d3.scale.linear()
 		.domain([0, 1])
-		.range([1975, 2015])
+		.range([1975, 2013])
 
     slider1.width(150).x(10).y(timeHeight/2).value(1.0).event(function(){
     	selectedyear = Math.round(xScale(slider1.value()));

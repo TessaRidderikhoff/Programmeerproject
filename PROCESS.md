@@ -107,3 +107,16 @@
 - It should be shown if no data is available, instead of doing nothing
 - Create another sankey diagram for comparison
 - Sometimes the tooltips are visible when the element itself is not --> fix that.
+
+## Wednesday 20-6
+
+### Done
+- Created another sankey diagram for comparison, was difficult
+- Improved visibility of the title
+- "No data available" added if needed
+
+### To do
+- Tooltips are not correct for second diagram
+- The map does not correctly update the years, the scatterplot does 
+- The scatterplot can not make two different sankey diagrams
+- The links do not match on the second diagram on click

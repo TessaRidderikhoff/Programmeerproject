@@ -11,7 +11,7 @@ window.onload = function() {
 		.defer(d3.json, "sources/GDP.json")
 		.defer(d3.json, "sources/InsuffientlyActive.json")
 		.defer(d3.json, "sources/MeanYearsOfSchooling.json")
-		.defer(d3.json, "sources/Diabetes2015.json")
+		.defer(d3.json, "sources/countryAbbreviations.json")
 		.defer(d3.json, "sources/HighBloodPressure.json")
 		.defer(d3.json, "sources/CancerPrevalence.json")
 		.defer(d3.json, "sources/FoodgroupCalories.json")
@@ -32,7 +32,7 @@ function main (error, loadedJSONs) {
 	GDP = loadedJSONs[6]
 	insuffientlyActive = loadedJSONs[7]
 	meanYearsOfSchooling = loadedJSONs[8]
-	diabetes = loadedJSONs[9]
+	countryAbbreviations = loadedJSONs[9]
 	highBloodPressure = loadedJSONs[10]
 	cancer = loadedJSONs[11]
 	foodgroupCalories = loadedJSONs[12]
@@ -43,7 +43,7 @@ function main (error, loadedJSONs) {
 	createSlider();
 	createScatter();
 	createSankey("sankeysvg");
-	// createSankey("secondsankeysvg");
+	createSankey("secondsankeysvg");
 }
 
 

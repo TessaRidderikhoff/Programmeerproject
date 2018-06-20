@@ -75,7 +75,7 @@ function createScatter() {
     		return d;
     	});
 
-    var yVariables = ["Diabetes prevalence", "Cardiovascular deaths / 100,000 people", "High blood pressure prevalence", "Cancer prevalence"]
+    var yVariables = ["Cardiovascular deaths / 100,000 people", "High blood pressure prevalence", "Cancer prevalence"]
 
     yDropdown = d3.select("body")
     	.append("select")
@@ -207,8 +207,13 @@ function createScatter() {
 					.style("stroke-width", 0.05)
 			})
 			.on("click", function(d) {
-				updateSankey(d["Country"], year, "sankeysvg");
-				return
+				timesClicked += 1
+				if (timesClicked % 2 == 1) {
+					updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
+				}
+				else {
+					updateSankey(d.properties.admin, year.replace("y", ""), "secondsankeysvg")
+				}
 			})
 	}
 
@@ -351,26 +356,7 @@ function updateVariableScatter() {
 
 		
 
-	if (selectYValue == "Diabetes prevalence") {
-		yData = diabetes;
-
-		if (year != 2015) {
-			year = 2015;
-			// updateVariableScatter();
-		}
-
-		yDataList = {};
-
-		for (i = 0; i < yData.length; i++) {
-			countryYname = yData[i]["Entity"].replace(/\s+/g, "");
-			yDataList[countryYname] = yData[i]["y" + year];
-		}
-
-		minY = 0;
-		maxY = 25;
-	}
-
-	else if (selectYValue == "Cardiovascular deaths / 100,000 people") {
+	if (selectYValue == "Cardiovascular deaths / 100,000 people") {
 		yData = cardiovascData;
 
 		if (year < 1990) {

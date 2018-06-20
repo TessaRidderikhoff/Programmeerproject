@@ -1,9 +1,10 @@
+timesClicked = 0;
+
 function createMap() {
 
 
 	// set default year
-	// var yearMap = "y2015"
-	var year = "y2015"
+	var year = "y2013"
 
 	// set map properties
 	margin = {top: 20, right: 20, bottom: 20, left: 20}
@@ -84,9 +85,10 @@ function createMap() {
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
+				var countryObesity = d3.select("#" + d.properties.admin.replace(/\s+/g, "")).attr("obesity")
 				return "<strong>Country: </strong> <span>" + d.properties.admin + 
 				"</span> <br> <strong> Percentage obesity: </strong> <span>" +
-				d.properties.obesity
+				countryObesity
 			})
 
 		// call the tooltip
@@ -131,9 +133,14 @@ function createMap() {
 				.style("opacity", 1)
 		})
 		.on("click", function(d) {
-			console.log(year)
-			splitYear = year.split("y")
-			updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
+			timesClicked += 1
+			if (timesClicked % 2 == 1) {
+				updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
+			}
+			else {
+				updateSankey(d.properties.admin, year.replace("y", ""), "secondsankeysvg")
+			}
+			
 		})
 
 
@@ -269,7 +276,6 @@ function updateMapGender(gender) {
 	countries
 		.attr("fill", "rgb(211, 211, 211)")
 
-	console.log(mapData, "HA:LL:O")
 
 	for (i = 0; i < mapData.length; i++) {
 		// determine id of country in map
@@ -282,10 +288,7 @@ function updateMapGender(gender) {
 		d3.selectAll(countryId)
 			.attr("fill", function() {
 				// determine obesity score
-				console.log(year)
 				yearScore = mapData[i]["y" + year]
-				console.log(mapData[i])
-				console.log(yearScore)
 
 				// fill if country has obesity data
 				if (yearScore) {
