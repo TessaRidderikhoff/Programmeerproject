@@ -62,14 +62,14 @@ function createSankey(svgname) {
 		.attr("y", 0)
 		.attr("height", 0)
 		.attr("width", nodeWidth)
-		.style("opacity", function(d, i) {
-			if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
-				return 1
-			}
-			else {
-				return 0.7
-			}
-		})
+		// .style("opacity", function(d, i) {
+		// 	if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
+		// 		return 1
+		// 	}
+		// 	else {
+		// 		return 0.7
+		// 	}
+		// })
 
 	var foodgroupTitles = sankeysvg.selectAll(".secondTitles")
 		.data(foodgroups)
@@ -80,14 +80,14 @@ function createSankey(svgname) {
 		})
 		.attr("x", (sankeyWidth - margin.right - nodeWidth) / 2 + nodeWidth + 5)
 		.attr("y", 0)
-		.style("opacity", function(d, i) {
-			if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
-				return 1
-			}
-			else {
-				return 0.7
-			}
-		})
+		// .style("opacity", function(d, i) {
+		// 	if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
+		// 		return 1
+		// 	}
+		// 	else {
+		// 		return 0.7
+		// 	}
+		// })
 
 	var links = sankeysvg.selectAll(".link")
 		.data(foodgroups)
@@ -289,15 +289,22 @@ function updateSankey(country, year, svgname) {
 							sankeyTip.show(d)
 						})
 						.on("mouseout", sankeyTip.hide)
-						.on("click", function(d) {
-							if (d == "Cereals & Grains") {
-								createGrainSankey(country, year, svgname);
-							}
-							else if (d == "Meat") {
-								calories = countryCaloriesData[d]
-								createMeatSankey(country, year, calories, svgname);
-							}
-						})
+						// .on("click", function(d) {
+						// 	if (d == "Cereals & Grains") {
+						// 		sankeysvg.selectAll(".thirdNode")
+						// 			.style("opacity", 0)
+						// 	}
+						// 	else if (d == "Meat") {
+						// 		sankeysvg.selectAll(".meatNode")
+						// 			.style("opacity", 0)
+
+						// 		sankeysvg.selectAll(".meatNodeLink")
+						// 			.style("opacity", 0)
+
+						// 		sankeysvg.selectAll(".meatNodeTitles")
+						// 			.style("opacity", 0)
+						// 	}
+						// })
 						.transition()
 						.attr("y", function() {
 							secondNodesHeight = calHeight + ((foodgroups.length - 1) * 10)
@@ -325,17 +332,13 @@ function updateSankey(country, year, svgname) {
 					    	return (x1 + "," + y1 + " " + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x2 + "," + y4)
 					    })
 					    .style("fill", "rgb(211, 211, 211)")
-
-					sankeysvg.selectAll("." + foodgroupsShortcuts[j] + "nodeTitle")
-						.attr("y", secondNodesY + ((heightList[j] + heightList[j + 1])/2) + (10 * (j)) + 5)
-						.text(foodgroups[j]);
 				}
 			}
 		}
 	}
 
 	if (foodgroupDataFound == false) {
-		noDataMessage(1);
+		noDataMessage();
 
 		sankeysvg.selectAll(".node")
 			.attr("height", 0)
@@ -346,8 +349,12 @@ function updateSankey(country, year, svgname) {
 		sankeysvg.selectAll(".sankeylabels")
 			.text("")
 	}
-
-	createCompareButton();
+	else {
+		createGrainSankey(country, year, svgname);
+		calories = countryCaloriesData["Meat"]
+		createMeatSankey(country, year, calories, svgname);
+		addSecondNodeLabels();
+	}
 }
 
 function createGrainSankey(country, year, svgname) {
@@ -370,18 +377,10 @@ function createGrainSankey(country, year, svgname) {
 	// call the tooltip
 	sankeysvg.call(thirdNodeTip);
 
-	grainDataFound = false;
-
 	for (i = 0; i < cerealCalories.length; i++) {
 		if (cerealCalories[i]["Entity"] == country) {
 			if (cerealCalories[i]["Year"] == year) {
-				grainDataFound = true;
 				countryCerealData = cerealCalories[i];
-				if (foodgroupCalories[i] == undefined) {
-						noDataMessage(2);
-						break
-					}
-
 				for (j = 0; j < grainTypes.length; j++) {
 					sankeysvg.selectAll("." + grainTypes[j] + "Rect")
 						.on("mouseover", thirdNodeTip.show)
@@ -433,10 +432,6 @@ function createGrainSankey(country, year, svgname) {
 			}
 		}
 	}
-
-	if (grainDataFound == false) {
-		noDataMessage(2);
-	}
 }
 
 function createMeatSankey(country, year, calories, svgname) {
@@ -458,24 +453,12 @@ function createMeatSankey(country, year, calories, svgname) {
 	// call the tooltip
 	sankeysvg.call(meatNodeTip);
 
-	meatDataFound = false;
-
 	for (i = 0; i < meatPercentage.length; i++) {
 		if (meatPercentage[i]["Entity"] == country) {
 			if (meatPercentage[i]["Year"] == year) {
-				meatDataFound = true;
 				countryMeatData = meatPercentage[i];
 				for (j = 0; j < meatTypes.length; j++) {
-					console.log(meatPercentage[i][meatTypes[j]])
-
-					meatPercentage[i][meatTypes[j]] = (meatPercentage[i][meatTypes[j]] / 100) * calories
-					console.log(foodgroupCalories[i])
-					if (foodgroupCalories[i] == undefined) {
-						noDataMessage(2);
-						break
-					}
 					
-					console.log(meatPercentage[i][meatTypes[j]])
 					sankeysvg.selectAll("." + meatShortcuts[j] + "Rect")
 						.on("mouseover", meatNodeTip.show)
 						.on("mouseout", meatNodeTip.hide)
@@ -489,7 +472,7 @@ function createMeatSankey(country, year, calories, svgname) {
 							return thirdNodesY + cumulativeMeatHeight + (10 * j)
 						})
 						.attr("height", function() {
-							height = heightScale(meatPercentage[i][meatTypes[j]])
+							height = heightScale((meatPercentage[i][meatTypes[j]] / 100) * calories)
 
 							if (height == 0) {
 								sankeysvg.selectAll("." + meatShortcuts[j] + "nodeTitle")
@@ -519,31 +502,43 @@ function createMeatSankey(country, year, calories, svgname) {
 						.style("opacity", 1)
 						.attr("y", thirdNodesY + ((heightMeatList[j] + heightMeatList[j + 1])/2) + (10 * (j)) + 5)
 						.text(meatTypes[j]);
+
+					
 				}
 			}
 		}
 	}
+	addSecondNodeLabels();
+}
 
-	if (meatDataFound == false) {
-		noDataMessage(2);
+function addSecondNodeLabels() {
+	for (j = 0; j < foodgroups.length; j++) {
+		sankeysvg.selectAll("." + foodgroupsShortcuts[j] + "nodeTitle")
+			.moveToFront()
+			.transition()
+			.attr("y", secondNodesY + ((heightList[j] + heightList[j + 1])/2) + (10 * (j)) + 5)
+			.text(foodgroups[j]);
 	}
 }
 
-function noDataMessage(position) {
-	sankeysvg.append("text")
+function noDataMessage() {
+	timesClicked -= 1;
+
+	var noDataMessage = sankeysvg.append("text")
 			.attr("class", "noDataMessage")
-			.attr("x", function() {
-				if (position == 1) {
-					return sankeyWidth / 2
-				}
-				else if (position == 2) {
-					return sankeyWidth - margin.right - nodeWidth
-				}
-			})
 			.attr("y", sankeyHeight/2)
 			.style("font-size", 18)
 			.style("fill", "gray")
 			.text("No data available")
+
+	noDataMessage
+		.attr("x", function() {
+			var textwidth = d3.select(".xAxisTitle").node()
+		    	.getBoundingClientRect()
+		    	.width;
+
+				return sankeyWidth / 2 - textwidth / 2
+			})
 }
 
 // source: https://css-tricks.com/snippets/javascript/lighten-darken-color/
@@ -577,3 +572,8 @@ function LightenDarkenColor(col, amt) {
   
 }
 
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};

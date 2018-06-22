@@ -125,3 +125,18 @@ body {
   stroke-width: 2px;
   fill: lightblue;
 }
+
+.axisSelect {
+  font-weight: bold;
+}
+
+.legendCircles {
+  fill: white;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.d/*ataPoints {
+  stroke: black;
+  stroke-width: 0.5px;
+}*/

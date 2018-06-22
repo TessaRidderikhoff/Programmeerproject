@@ -120,3 +120,34 @@
 - The map does not correctly update the years, the scatterplot does 
 - The scatterplot can not make two different sankey diagrams
 - The links do not match on the second diagram on click
+
+## Thursday 21-6
+
+### Done
+- Improved scatterplot axes
+- Added circle legend
+- Added label for legend world map
+- Fixed some bugs of the no-data-message
+- The sankey-diagram can no longer be clicked on, but is complete when clicked on the country
+- Added pages for design choices, etc.
+
+### To do
+- The labels of the sankey diagram foodgroups are behind the links of the diagram
+- No data notification is not always correct
+- The tooltips don't have the correct information for both sankey diagrams
+- The nodes with meat-information double when clicked on the same country twice
+
+## Friday 22-6
+
+### Done
+- I moved the labels of the sankey-diagram to the front
+- I added that when no data is available for a country, the next sankey diagram is on that svg, instead of the other one
+- I fixed some bugs of the no-data message (again). It works now
+- There was a problem that the map did not update the year for the sankey diagram, it does now
+
+### To do
+- Some countries get errors (Zambia, Uganda, Sudan, Togo, Spain (that I know of))
+- Tooltips are still not working for both sankey diagrams (hard)
+- Tooltip of the map can fall of the map for Russia, USA and Canada (and Greenland but Greenland doesn't have data anyway)
+- Maybe the tooltip shouldn't say "null" when no data is available
+- Improve code quality

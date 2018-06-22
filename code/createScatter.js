@@ -5,9 +5,9 @@ function c10(n) {
 
 function createScatter() {
 
-	margin = {top: 30, right: 120, bottom: 40, left: 80}
+	margin = {top: 80, right: 120, bottom: 40, left: 80}
 	scatterWidth = 700;
-	scatterHeight = 300;
+	scatterHeight = 350;
 
 	scattersvg = d3.select(".scattersvg")
 
@@ -17,8 +17,8 @@ function createScatter() {
 	var scatterTitle = scattersvg
 		.append("text")
 		.attr("class", "scattertitle")
-		.attr("x", scatterWidth/2)
-		.attr("y", margin.top)
+		.attr("x", (scatterWidth - margin.right)/2)
+		.attr("y", margin.top/2)
 		.style("fill", "gray")
 		.text("Year " + year)
 
@@ -57,13 +57,37 @@ function createScatter() {
 
     var xVariables = ["Calories eaten on average (per day)", "Mean years of schooling", "Gross Domestic Product", "Percentage insuffiently exercise"]
  
+    xAxisSelectText = scattersvg
+    	.append("text")
+    	.attr("class", "xAxisSelectText axisSelect")
+    	.attr("x", margin.left)
+    	.attr("y", margin.top - 17)
+    	.text("x-axis: ")
+
+    xAxisTitle = xAxisG
+    	.append("text")
+    	.attr("class", "xAxisTitle axisTitle")
+    	.attr("y", 30)
+    	.text(xVariables[0])
+
+    xAxisTitle
+    	.attr("x", function() {
+			var textwidth = d3.select(".xAxisTitle").node()
+		    	.getBoundingClientRect()
+		    	.width;
+
+			return (scatterWidth - margin.right - margin.left)/2 - textwidth/2 + margin.left
+		})
+
     xDropdown = d3.select("body")
     	.append("select")
     	.attr("class", "xSelect")
     	.style("z-index", 1)
     	.style("position", "absolute")
-    	.style("left", "800px")
-    	.style("top", "330px")
+    	.style("left", function () {
+    		return margin.left + mapWidth + 75 + "px"
+    	})
+    	.style("top", "100px")
     	.on("change", updateVariableScatter);
 
     xOptions = xDropdown
@@ -77,14 +101,34 @@ function createScatter() {
 
     var yVariables = ["Cardiovascular deaths / 100,000 people", "High blood pressure prevalence", "Cancer prevalence"]
 
+    yAxisSelectText = scattersvg
+    	.append("text")
+    	.attr("class", "yAxisSelectText axisSelect")
+    	.attr("x", scatterWidth/2)
+    	.attr("y", margin.top - 17)
+    	.text("y-axis: ");
+
     yDropdown = d3.select("body")
     	.append("select")
     	.attr("class", "ySelect")
+    	.attr("transform", "rotate(90)")
     	.style("z-index", 1)
     	.style("position", "absolute")
-    	.style("left", "670px")
-    	.style("top", "50px")
+    	.style("left", function() {
+    		return mapWidth + (scatterWidth/2) + 75 + "px"
+    	})
+    	.style("top", "100px")
     	.on("change", updateVariableScatter);
+
+    yAxisTitle = yAxisG
+    	.append("text")
+    	.attr("class", "yAxisTitle axisTitle")
+    	.attr("transform", "rotate(-90)")
+        .attr("y", -40)
+        .attr("x", -margin.left)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text(yVariables[0]);
 
     yOptions = yDropdown
     	.selectAll("option")
@@ -209,10 +253,12 @@ function createScatter() {
 			.on("click", function(d) {
 				timesClicked += 1
 				if (timesClicked % 2 == 1) {
-					updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
+					console.log(d)
+					console.log(year)
+					updateSankey(d["Country"], year, "sankeysvg")
 				}
 				else {
-					updateSankey(d.properties.admin, year.replace("y", ""), "secondsankeysvg")
+					updateSankey(d["Country"], year, "secondsankeysvg")
 				}
 			})
 	}
@@ -268,8 +314,6 @@ function createScatter() {
 		.data(continents)
 		.enter()
 		.append("text")
-		.attr("height", 10)
-		.attr("width", 30)
 		.attr("x", scatterWidth - margin.right + 23)
 		.attr("y", function(d, i) {
 			return margin.top + (i * 15) + 9;
@@ -277,6 +321,38 @@ function createScatter() {
 		.text(function(d, i) {
 			return continents[i]
 		})
+
+	var legendCircleSizes = [50, 35, 20, 5];
+
+	var circleLegend = scattersvg.append("g")
+
+	var legendCircles = circleLegend.selectAll(".legendCircles")
+		.data(legendCircleSizes)
+		.enter()
+		.append("circle")
+		.attr("class", "legendCircles")
+		.attr("cx", scatterWidth - margin.right + 10)
+		.attr("cy", function(d, i) {
+			return margin.top + 150 +(i * 20);
+		})
+		.attr("r", function(d) {
+			return sizeScale(d);
+		})
+		// .style("fill", c10(0));
+
+	var circleText = circleLegend.selectAll(".circleText")
+		.data(legendCircleSizes)
+		.enter()
+		.append("text")
+		.attr("class", "circleText")
+		.attr("x", scatterWidth - margin.right + 23)
+		.attr("y", function(d, i) {
+			return margin.top + 150 +(i * 20)
+		})
+		.text(function(d) {
+			return d + "% obesity"
+		})
+
 }
 
 function updateVariableScatter() {
@@ -424,7 +500,7 @@ function updateVariableScatter() {
 
 	var xScale = d3.scale.linear()
 		.domain([minX, maxX])
-		.range([margin.left, mapWidth - margin.right])
+		.range([margin.left, scatterWidth - margin.right])
 
 	var xAxis = d3.svg.axis()
 		.scale(xScale)
@@ -433,9 +509,21 @@ function updateVariableScatter() {
 
 	xAxisG.call(xAxis);
 
+	xAxisTitle
+		.text(selectXValue)
+
+	xAxisTitle
+    	.attr("x", function() {
+			var textwidth = d3.select(".xAxisTitle").node()
+		    	.getBoundingClientRect()
+		    	.width;
+
+			return (scatterWidth - margin.right - margin.left)/2 - textwidth/2 + margin.left
+		})
+
 	var yScale = d3.scale.linear()
 		.domain([maxY, minY])
-		.range([margin.top, mapHeight - margin.bottom])
+		.range([margin.top, scatterHeight - margin.bottom])
 
 	var yAxis = d3.svg.axis()
 		.scale(yScale)
@@ -443,6 +531,9 @@ function updateVariableScatter() {
 		.tickSize(0)
 
 	yAxisG.call(yAxis);
+
+	yAxisTitle
+		.text(selectYValue)
 
 	d3.selectAll(".scattertitle")
 		.text("Year " + year)

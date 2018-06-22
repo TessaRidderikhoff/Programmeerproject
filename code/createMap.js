@@ -4,7 +4,7 @@ function createMap() {
 
 
 	// set default year
-	var year = "y2013"
+	var yearMap = "y2013"
 
 	// set map properties
 	margin = {top: 20, right: 20, bottom: 20, left: 20}
@@ -60,7 +60,7 @@ function createMap() {
 		d3.selectAll(countryId)
 			.attr("fill", function() {
 				// determine obesity score
-				yearScore = mapData[i][year]
+				yearScore = mapData[i][yearMap]
 
 				// fill if country has obesity data
 				if (yearScore) {
@@ -135,10 +135,10 @@ function createMap() {
 		.on("click", function(d) {
 			timesClicked += 1
 			if (timesClicked % 2 == 1) {
-				updateSankey(d.properties.admin, year.replace("y", ""), "sankeysvg")
+				updateSankey(d.properties.admin, yearMap.replace("y", ""), "sankeysvg")
 			}
 			else {
-				updateSankey(d.properties.admin, year.replace("y", ""), "secondsankeysvg")
+				updateSankey(d.properties.admin, yearMap.replace("y", ""), "secondsankeysvg")
 			}
 			
 		})
@@ -165,7 +165,7 @@ function createMap() {
 		.attr("x", function(d, i) {
 			return (mapWidth/2)-(legendWidth/2) + i * legendWidth/(legendColours.length)
 		})
-		.attr("y", mapHeight - 10)
+		.attr("y", mapHeight - 23)
 		.style("fill", function(d, i) {
 			return "rgb(255," + (200 - (i * 25)) + ", " + (200 - (i * 25)) + ")" 
 		})
@@ -175,17 +175,35 @@ function createMap() {
 
 	legendTitles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-	legendtext = legend.selectAll("text")
+	legendtext = legend.selectAll(".legendLabels")
 		.data(legendTitles)
 		.enter()
 		.append("text")
+		.attr("class", "legendLabels")
 		.attr("x", function(d, i) {
 			return (mapWidth/2)-(legendWidth/2) + i * legendWidth/(legendColours.length) - 5
 		})
-		.attr("y", mapHeight - 15)
+		.attr("y", mapHeight - 28)
 		.text(function(d, i) {
 			return i * 5
 		})
+
+	var legendTitle = legend
+		.append("text")
+		.attr("class", "legendTitle")
+		
+		.attr("y", mapHeight - 3)
+		.text("Percentage obesity")
+
+	var textwidth = d3.select(".legendTitle").node()
+	    	.getBoundingClientRect()
+	    	.width;
+
+	legendTitle
+		.attr("x", function() {
+			return mapWidth/2 - textwidth/2
+		})
+
 
 	legendrects
 		.on("mouseover", function(d) {
