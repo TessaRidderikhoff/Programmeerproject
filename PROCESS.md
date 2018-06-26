@@ -151,3 +151,28 @@
 - Tooltip of the map can fall of the map for Russia, USA and Canada (and Greenland but Greenland doesn't have data anyway)
 - Maybe the tooltip shouldn't say "null" when no data is available
 - Improve code quality
+
+## Monday 25-6
+
+### Done
+- Fixed the error of certain countries, turns out that the height calculation was incorrect and selected the wrong countries.
+- The tooltip can't fall off the world map anymore, it now appears below the country if the country is at a certain height.
+- The createMap script is commented and an extra function is created to avoid double code.
+
+### To do
+- Comment rest of scripts
+- Tooltips sankey diagram
+- Put labels on axes of measurements
+
+## Tuesday 26-6
+
+### Done
+- Commented createScatter and removed unnecessary code in this script. Also improved efficiency of this script.
+- Commented most of createSankey
+- Added name and studentnumber to navigation bar
+
+### To do
+- Rest of comments
+- Pages of "About the data" and "Sources"
+- Tooltips of sankey diagram
+

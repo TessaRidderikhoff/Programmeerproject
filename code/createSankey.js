@@ -1,13 +1,18 @@
 function createSankey(svgname) {
+/* This function prepares all elements for the sankey diagram, in a specified
+svg, but does not display anything yet. */
 
+	// select the svg that is specified
+	sankeysvg = d3.select("." + svgname)
+
+	// set svg properties
 	sankeyMargin = {top: 80, bottom: 40, right: 80, left: 20}
-	sankeyWidth = 600;
-	sankeyHeight = 400;
+	sankeyWidth = Number(sankeysvg.attr("width"));
+	sankeyHeight = Number(sankeysvg.attr("height"));;
 
 	nodeWidth = 40;
 
-	sankeysvg = d3.select("." + svgname)
-
+	// create sankkey title (without giving text yet)
 	var sankeyTitle = sankeysvg
 		.append("text")
 		.attr("class", "sankeytitle graphtitle")
@@ -15,13 +20,7 @@ function createSankey(svgname) {
 		.attr("y", sankeyMargin.top/2)
 		.style("fill", "gray")
 
-	var sankeyYearTitle = sankeysvg
-		.append("text")
-		.attr("class", "sankeyYearTitle graphtitle")
-		.attr("x", sankeyWidth - 75)
-		.attr("y", sankeyMargin.top/2)
-		.style("fill", "gray")
-
+	// create label for calorie-node
 	var caloriesTitle = sankeysvg
 		.append("text")
 		.attr("class", "caloriestitle sankeylabels")
@@ -33,20 +32,21 @@ function createSankey(svgname) {
         .attr("dy", ".71em")
         .style("text-anchor", "end")
 
-		
-
+    // create calorie-node (height and y not specified, so not visible yet)
 	var caloriesRect = sankeysvg
 		.append("rect")
 		.attr("class", "calRect node")
 		.attr("x", sankeyMargin.left)
-		.attr("y", sankeyMargin.top)
-		.attr("height", 0)
 		.attr("width", nodeWidth)
 		.attr("fill", c10(0));
 
+	// specify foodgroups the calories are divided in
 	foodgroups = ["Sugar", "Oils & Fats", "Meat", "Dairy & Eggs", "Fruits & Vegetables", "Starchy Roots", "Pulses", "Cereals & Grains", "Alcoholic Beverages", "Other"];
+	
+	// specify the shortcuts of these foodgroups (for class/id purposes)
 	foodgroupsShortcuts = ["sugar", "oil", "meat", "dairy", "fruit", "roots", "pulses", "grains", "alcohol", "other"];
 	
+	// create foodgroup nodes (height and y not specified, so not visible yet)
 	var foodgroupRects = sankeysvg.selectAll(".secondNode")
 		.data(foodgroups)
 		.enter()
@@ -59,18 +59,9 @@ function createSankey(svgname) {
 			return c10(i);
 		})
 		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth) / 2)
-		.attr("y", 0)
-		.attr("height", 0)
 		.attr("width", nodeWidth)
-		// .style("opacity", function(d, i) {
-		// 	if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
-		// 		return 1
-		// 	}
-		// 	else {
-		// 		return 0.7
-		// 	}
-		// })
 
+	// create labels for the foodgroup-nodes (text and y not yet specified)
 	var foodgroupTitles = sankeysvg.selectAll(".secondTitles")
 		.data(foodgroups)
 		.enter()
@@ -79,16 +70,8 @@ function createSankey(svgname) {
 			return foodgroupsShortcuts[i] + "nodeTitle"+" secondTitles sankeylabels"
 		})
 		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth) / 2 + nodeWidth + 5)
-		.attr("y", 0)
-		// .style("opacity", function(d, i) {
-		// 	if (foodgroupsShortcuts[i] == "grains" || foodgroupsShortcuts[i] == "meat"){
-		// 		return 1
-		// 	}
-		// 	else {
-		// 		return 0.7
-		// 	}
-		// })
 
+	// create links from the calorie-node to the foodgroup-nodes
 	var links = sankeysvg.selectAll(".link")
 		.data(foodgroups)
 		.enter()
@@ -96,53 +79,58 @@ function createSankey(svgname) {
 		.attr("class", function(d, i) {
 			return foodgroupsShortcuts[i] + " link"
 		})
-	    .attr("points", "0,0 0,0 0,0 0,0")
+
+		// colour of all links is grey
 	    .style("fill", "rgb(211, 211, 211)");
 
+	// specify the possible grain-types in the Cereals & Grains foodgroup
 	grainTypes = ["Oats", "Rye", "Barley", "Sorghum", "Maize", "Wheat", "Rice"];
 
-	var thirdNodeRects = sankeysvg.selectAll(".thirdNode")
+	// create nodes for the grain-foodgroup for the different graintypes
+	var grainNodeRects = sankeysvg.selectAll(".grainNode")
 		.data(grainTypes)
 		.enter()
 		.append("rect")
 		.attr("class", function(d, i) {
-			return grainTypes[i] + "Rect" + " thirdNode node"
+			return grainTypes[i] + "Rect" + " grainNode node"
 		})
+
+		// colour the grain-nodes with the colour of the parent-node, but lighter/darker
 		.attr("fill", function(d, i) {
+			
+			// this makes every node a shade darker than the last
 			return LightenDarkenColor(c10(7), (100 - (30 * i)));
 		})
 		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth))
-		.attr("y", 0)
-		.attr("height", 0)
-		.attr("width", nodeWidth)
-		.style("opacity", function(d, i) {
-			return (0.3 + (0.1 * i));
-		});
+		.attr("width", nodeWidth);
 
-	var thirdNodeLinks = sankeysvg.selectAll(".thirdNodeLink")
+	// create links to the grainnodes (without shape yet)
+	var grainNodeLinks = sankeysvg.selectAll(".grainNodeLink")
 		.data(grainTypes)
 		.enter()
 		.append("polygon")
 		.attr("class", function(d, i) {
-			return grainTypes[i] + " thirdNodeLink link"
+			return grainTypes[i] + " grainNodeLink link"
 		})
-	    .attr("points", "0,0 0,0 0,0 0,0")
 	    .style("fill", "rgb(211, 211, 211)");
 
-	var thirdNodeTitles = sankeysvg.selectAll(".thirdNodeTitles")
+	// create labels for the grain nodes (without text yet)
+	var grainNodeTitles = sankeysvg.selectAll(".grainNodeTitles")
 		.data(grainTypes)
 		.enter()
 		.append("text")
 		.attr("class", function(d, i) {
-			return grainTypes[i] + "nodeTitle"+" thirdNodeTitles sankeylabels"
+			return grainTypes[i] + "nodeTitle"+" grainNodeTitles sankeylabels"
 		})
-		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth) + nodeWidth + 5)
-		.attr("y", 0)
+		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth) + nodeWidth + 5);
 
-
+	// define different types of meat
 	meatTypes = ["Sheep & Goat", "Beef & Buffalo", "Pig", "Poultry"];
+	
+	// define shortcuts for types of meat (for class/id purposes)
 	meatShortcuts = ["sheep", "beef", "pig", "poultry"];
 
+	
 	var meatRects = sankeysvg.selectAll(".meatNode")
 		.data(meatTypes)
 		.enter()
@@ -196,13 +184,13 @@ function updateSankey(country, year, svgname) {
 	sankeysvg.selectAll(".link")
 			.attr("opacity", 1)
 
-	sankeysvg.selectAll(".thirdNode")
+	sankeysvg.selectAll(".grainNode")
 		.style("opacity", 0);
 
 	sankeysvg.selectAll(".meatNode")
 		.style("opacity", 0);
 
-	sankeysvg.selectAll(".thirdNodeLink")
+	sankeysvg.selectAll(".grainNodeLink")
 		.style("opacity", 0);
 
 	sankeysvg.selectAll(".meatNodeLink")
@@ -211,7 +199,7 @@ function updateSankey(country, year, svgname) {
 	sankeysvg.selectAll(".noDataMessage")
 		.remove()
 
-	sankeysvg.selectAll(".thirdNodeTitles")
+	sankeysvg.selectAll(".grainNodeTitles")
 		.style("opacity", 0)
 		.style("font-size", 11)
 
@@ -291,7 +279,7 @@ function updateSankey(country, year, svgname) {
 						.on("mouseout", sankeyTip.hide)
 						// .on("click", function(d) {
 						// 	if (d == "Cereals & Grains") {
-						// 		sankeysvg.selectAll(".thirdNode")
+						// 		sankeysvg.selectAll(".grainNode")
 						// 			.style("opacity", 0)
 						// 	}
 						// 	else if (d == "Meat") {
@@ -364,7 +352,7 @@ function createGrainSankey(country, year, svgname) {
 	cumulativeGrainHeight = 0;
 	heightGrainList = [0];
 
-	var thirdNodeTip = d3.tip()
+	var grainNodeTip = d3.tip()
 		.attr('class', 'd3-tip')
 		.offset([-10, 0])
 		.html(function(d, calories) {
@@ -375,7 +363,7 @@ function createGrainSankey(country, year, svgname) {
 		.style("z-index", 2)
 
 	// call the tooltip
-	sankeysvg.call(thirdNodeTip);
+	sankeysvg.call(grainNodeTip);
 
 	for (i = 0; i < cerealCalories.length; i++) {
 		if (cerealCalories[i]["Entity"] == country) {
@@ -384,16 +372,16 @@ function createGrainSankey(country, year, svgname) {
 				for (j = 0; j < grainTypes.length; j++) {
 
 					sankeysvg.selectAll("." + grainTypes[j] + "Rect")
-						.on("mouseover", thirdNodeTip.show)
-						.on("mouseout", thirdNodeTip.hide)
+						.on("mouseover", grainNodeTip.show)
+						.on("mouseout", grainNodeTip.hide)
 						.transition()
 						.style("opacity", 1)
 						.attr("y", function() {
 							grainHeight = heightScale(countryCaloriesData["Cereals & Grains"]);
 							grainY = heightList[7] + 70 + secondNodesY
-							thirdNodesHeight = grainHeight + ((grainTypes.length - 1) * 10);
-							thirdNodesY = grainY - ((thirdNodesHeight - grainHeight)/2)				
-							return thirdNodesY + cumulativeGrainHeight + (10 * j)
+							grainNodesHeight = grainHeight + ((grainTypes.length - 1) * 10);
+							grainNodesY = grainY - ((grainNodesHeight - grainHeight)/2)				
+							return grainNodesY + cumulativeGrainHeight + (10 * j)
 						})
 						.attr("height", function() {
 							height = heightScale(cerealCalories[i][grainTypes[j]])
@@ -410,7 +398,7 @@ function createGrainSankey(country, year, svgname) {
 
 					sankeysvg.selectAll("." + grainTypes[j] + "nodeTitle")
 						.style("opacity", 1)
-						.attr("y", thirdNodesY + ((heightGrainList[j] + heightGrainList[j + 1])/2) + (10 * (j)) + 5)
+						.attr("y", grainNodesY + ((heightGrainList[j] + heightGrainList[j + 1])/2) + (10 * (j)) + 5)
 						.text(grainTypes[j]);
 
 					sankeysvg.selectAll("." + grainTypes[j])
@@ -421,8 +409,8 @@ function createGrainSankey(country, year, svgname) {
 					    	console.log(heightGrainList)
 					    	y1 = grainY + heightGrainList[j]
 					    	y2 = grainY + heightGrainList[j + 1]
-					    	y3 = thirdNodesY + heightGrainList[j + 1] + (10 * j)
-					    	y4 = thirdNodesY + heightGrainList[j] + (10 * j)
+					    	y3 = grainNodesY + heightGrainList[j + 1] + (10 * j)
+					    	y4 = grainNodesY + heightGrainList[j] + (10 * j)
 					    	return (x1 + "," + y1 + " " + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x2 + "," + y4)
 					    })
 					    .style("opacity", 1)
@@ -468,9 +456,9 @@ function createMeatSankey(country, year, calories, svgname) {
 						.attr("y", function() {
 							meatHeight = heightScale(countryCaloriesData["Meat"]);
 							meatY = heightList[2] + 20 + secondNodesY
-							thirdNodesHeight = meatHeight + ((meatTypes.length - 1) * 10);
-							thirdNodesY = meatY - ((thirdNodesHeight - meatHeight)/2)				
-							return thirdNodesY + cumulativeMeatHeight + (10 * j)
+							grainNodesHeight = meatHeight + ((meatTypes.length - 1) * 10);
+							grainNodesY = meatY - ((grainNodesHeight - meatHeight)/2)				
+							return grainNodesY + cumulativeMeatHeight + (10 * j)
 						})
 						.attr("height", function() {
 							height = heightScale((meatPercentage[i][meatTypes[j]] / 100) * calories)
@@ -492,8 +480,8 @@ function createMeatSankey(country, year, calories, svgname) {
 					    	x2 = (sankeyWidth - sankeyMargin.right - nodeWidth)
 					    	y1 = meatY + heightMeatList[j]
 					    	y2 = meatY + heightMeatList[j + 1]
-					    	y3 = thirdNodesY + heightMeatList[j + 1] + (10 * j)
-					    	y4 = thirdNodesY + heightMeatList[j] + (10 * j)
+					    	y3 = grainNodesY + heightMeatList[j + 1] + (10 * j)
+					    	y4 = grainNodesY + heightMeatList[j] + (10 * j)
 					    	return (x1 + "," + y1 + " " + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x2 + "," + y4)
 					    })
 					    .style("opacity", 1)
@@ -501,7 +489,7 @@ function createMeatSankey(country, year, calories, svgname) {
 
 					sankeysvg.selectAll("." + meatShortcuts[j] + "nodeTitle")
 						.style("opacity", 1)
-						.attr("y", thirdNodesY + ((heightMeatList[j] + heightMeatList[j + 1])/2) + (10 * (j)) + 5)
+						.attr("y", grainNodesY + ((heightMeatList[j] + heightMeatList[j + 1])/2) + (10 * (j)) + 5)
 						.text(meatTypes[j]);
 
 					

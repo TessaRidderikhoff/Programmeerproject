@@ -659,16 +659,23 @@ and y-data dictionaries, with the right size.  */
 	// create empty list to save countries without data available
 	noDataCountries = [];
 
+	// loop through country-dots and place them in scatterplot
 	for (i = 0; i < sizeData.length; i++) {
+		
+		// create same ID as dot to select dot
 		countryname = sizeData[i]["Country"].replace(/\s+/g, "")
 		countryId = "#" + "scatter" + countryname;
 
-		
+		// select country-dot
 		d3.selectAll(countryId)
 			.attr("cx", function() {
+
+				// if x-data is available, determine x-location of dot
 				if (xDataList[countryname]) {
 					return xScale(xDataList[countryname])
 				}
+
+				// if not, put country in no-data list
 				else {
 					noDataCountries.push(countryId)
 					return
@@ -683,12 +690,17 @@ and y-data dictionaries, with the right size.  */
 					return
 				}
 			})
+
+			// determine radius of dot based on percentage obesity
 			.attr("r", function(d) {
 				sizeYear = "y" + year
 				return sizeScale(d[sizeYear])
 			})
+
+		// end of loop through dots
 		}
 
+		// set radius of country-dot to 0 if x- or y-data of country was not available
 		for (i = 0; i < noDataCountries.length; i++) {
 			d3.selectAll(noDataCountries[i])
 				.attr("r", 0);
@@ -696,6 +708,11 @@ and y-data dictionaries, with the right size.  */
 }
 
 function c10(n) {
-  var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
-  return colores_g[n % colores_g.length];
+/* This function returns a colour (10 possible colours) */
+
+	// define possible colours
+	var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+	
+	// return colour based on index
+	return colores_g[n % colores_g.length];
 }
