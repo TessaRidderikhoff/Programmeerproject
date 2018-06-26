@@ -27,9 +27,6 @@ function createSlider() {
         updateYear(year);
     });
 
-
-	
-
     svg.call(slider1);
 }
 
