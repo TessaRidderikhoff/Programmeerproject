@@ -1,14 +1,47 @@
+/******************************************************************************
+
+graphs.css
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This script contains the css file for the styling of index.html, on which 
+several svg's with graphs can be viewed. 
+
+******************************************************************************/
+
 body {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size: 11px;
 }
 
+/*tooltips*/
 .d3-tip {
 	background: rgba(255, 255, 255, 0.8);
 	opacity: 0.5;
 	border-radius: 5px;
 }
 
+/*countries in world map*/
+.country {
+	stroke-width: 0.05;
+	stroke: white;
+}
+
+.country:hover {
+	stroke-width: 0.2;
+	stroke: black;
+}
+
+/*dropdown scatterplot*/
+.xSelect {
+  z-index: 1;
+  position: absolute;
+  left: 800px;
+  top: 330px;
+}
+
+/*axes for the scatterplot*/
 .ticks {
   font: 10px sans-serif;
 }
@@ -25,116 +58,41 @@ body {
     font-size: 11px;
 }
 
-.country {
-	stroke-width: 0.05;
-	stroke: white;
-}
-
-.country:hover {
-	stroke-width: 0.2;
-	stroke: black;
-}
-
-.xSelect {
-  z-index: 1;
-  position: absolute;
-  left: 800px;
-  top: 330px;
-}
-
+/*title scatterplot*/
 .scattertitle {
   font-size: 30px;
   color: grey;
 }
 
+/*label calorie-node Sankey*/
 .caloriestitle {
   font-size: 20px;
-  color: gray;
+  color: grey;
 }
 
+/*title Sankey diagram*/
 .graphtitle {
   font-size: 30px;
-  color: gray;
+  color: grey;
 }
 
-.thirdNode {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-
-.secondNode {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-
-.calRect {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-
-.meatNode {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-
-.grainsRect {
-  opacity: 1;
-}
-
-.meatRect {
-  opacity: 1;
-}
-
+/*node of Sankey*/
 .node {
   stroke: black;
   stroke-width: 0.5px;
 }
 
-.track,
-.track-inset,
-.track-overlay {
-  stroke-linecap: round;
-}
-
-.track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
-}
-
-.track-inset {
-  stroke: #ddd;
-  stroke-width: 8px;
-}
-
-.track-overlay {
-  pointer-events: stroke;
-  stroke-width: 50px;
-  stroke: transparent;
-  cursor: crosshair;
-}
-
-.handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: 0.5;
-  stroke-width: 1.25px;
-}
-
+/*title slider*/
 .yearInfo {
 	font-size: 15px;
 }
 
-.button rect {
-  stroke: black;
-  stroke-width: 2px;
-  fill: lightblue;
-}
-
+/*axes-selection title*/
 .axisSelect {
   font-weight: bold;
 }
 
+/*legend circles*/
 .legendCircles {
   fill: white;
   stroke: black;

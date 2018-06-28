@@ -1,3 +1,16 @@
+/******************************************************************************
+
+createSankey.js
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This script contains a function for creating Sankey diagrams, displaying the 
+eating habits of a country in a requested year. It contains an initiation 
+function for the Sankey diagram, and several update functions.
+
+******************************************************************************/
+
 function createSankey(svgname) {
 /* This function prepares all elements for the sankey diagram, in a specified
 svg, but does not display anything yet. */
@@ -85,15 +98,14 @@ svg, but does not display anything yet. */
 
 	// specify the possible grain-types in the Cereals & Grains foodgroup
 	grainTypes = ["Oats", "Rye", "Barley", "Sorghum", "Maize", "Wheat", "Rice"];
-	grainShortcuts = ["oats", "rye", "barley", "sorghum", "maize", "wheat", "rice"];
 
 	// create nodes for the grain-foodgroup for the different graintypes
 	var grainNodeRects = sankeysvg.selectAll(".grainNode")
-		.data(grainShortcuts)
+		.data(grainTypes)
 		.enter()
 		.append("rect")
 		.attr("class", function(d, i) {
-			return grainShortcuts[i] + "Rect" + " grainNode node"
+			return grainTypes[i] + "Rect" + " grainNode node"
 		})
 
 		// colour the grain-nodes with the colour of the parent-node, but lighter/darker
@@ -121,7 +133,7 @@ svg, but does not display anything yet. */
 		.enter()
 		.append("text")
 		.attr("class", function(d, i) {
-			return grainShortcuts[i] + "nodeTitle"+" grainNodeTitles sankeylabels"
+			return grainTypes[i] + "nodeTitle"+" grainNodeTitles sankeylabels"
 		})
 		.attr("x", (sankeyWidth - sankeyMargin.right - nodeWidth) + nodeWidth + 5);
 
@@ -245,27 +257,25 @@ specified svg, with the data of the selected country and year. */
 
 	// create tooltip for sankey-nodes, containing category and amount of calories
 	var firstSankeyTip = d3.tip()
-		.attr('class', 'd3-tip')
+		.attr("class", "d3-tip")
 		.offset([-10, 0])
 		.html(function(d) {
 			return "<strong>Food group: </strong> <span>" + d + 
 			"<br> <strong> Calories: </strong> <span>" +
 			firstCountryCaloriesData[d]
 		})
-		.attr("class", svgname)
 
 		// place tooltip above other elements
 		.style("z-index", 2)
 
 	var secondSankeyTip = d3.tip()
-		.attr('class', 'd3-tip')
+		.attr("class", "d3-tip")
 		.offset([-10, 0])
 		.html(function(d) {
 			return "<strong>Food group: </strong> <span>" + d + 
 			"<br> <strong> Calories: </strong> <span>" +
 			secondCountryCaloriesData[d]
 		})
-		.attr("class", svgname)
 
 		// place tooltip above other elements
 		.style("z-index", 2)
@@ -335,15 +345,20 @@ specified svg, with the data of the selected country and year. */
 
 						// show tooltip on mouse-over and hide on mouse-out
 						.on("mouseover", function(d) {
+
+							// select right tooltip for this svg
 							if (svgname == "sankeysvg") {
-								firstSankeyTip.show(d)
+								firstSankeyTip.show(d);
 							}
 							else {
-								secondSankeyTip.show(d)
+								secondSankeyTip.show(d);
 							}
 							
 						})
-						.on("mouseout", firstSankeyTip.hide)
+						.on("mouseout", function() {
+							firstSankeyTip.hide();
+							secondSankeyTip.hide();
+						})
 						.transition()
 
 						// set y-location of foodgroup-node underneath last node
@@ -459,7 +474,9 @@ additional information about either the grain- or meat-foodgroup. */
 		thirdNodeData = cerealCalories;
 		category = "Cereals & Grains";
 		categoriesFoodgroup = grainTypes;
-		categoriesShortcuts = grainShortcuts;
+
+		// grain doesn't have shortcuts: so same
+		categoriesShortcuts = grainTypes;
 
 		// grain is the seventh foodgroup (for selection)
 		index = 7
@@ -476,6 +493,65 @@ additional information about either the grain- or meat-foodgroup. */
 		index = 2
 	}
 
+	var firstGrainSankeyTip = d3.tip()
+		.attr("class", "d3-tip")
+		.offset([-10, 0])
+		.html(function(d) {
+			return "<strong>Food group: </strong> <span>" + d + 
+			"<br> <strong> Calories: </strong> <span>" +
+			secondCountryCaloriesData[d]
+		})
+
+		// place tooltip above other elements
+		.style("z-index", 2)
+
+	/* Create all tooltips (one for each svg and foodgroup) */
+
+	var firstGrainTip = d3.tip()
+ 		.attr('class', 'd3-tip')
+ 		.offset([-10, 0])
+ 		.html(function(d, calories) {
+ 			return "<strong>Food group: </strong> <span>" + d + 
+ 			"<br> <strong> Calories: </strong> <span>" +
+ 			firstCountryCerealData[d]
+ 		})
+ 		.style("z-index", 2)
+
+ 	var firstMeatTip = d3.tip()
+ 		.attr('class', 'd3-tip')
+ 		.offset([-10, 0])
+ 		.html(function(d, calories) {
+ 			return "<strong>Food group: </strong> <span>" + d + 
+ 			"<br> <strong> Calories: </strong> <span>" +
+ 			Math.round(firstCountryMeatData[d])
+ 		})
+ 		.style("z-index", 2)
+
+ 	var secondGrainTip = d3.tip()
+ 		.attr('class', 'd3-tip')
+ 		.offset([-10, 0])
+ 		.html(function(d, calories) {
+ 			return "<strong>Food group: </strong> <span>" + d + 
+ 			"<br> <strong> Calories: </strong> <span>" +
+ 			secondCountryCerealData[d]
+ 		})
+ 		.style("z-index", 2)
+
+ 	var secondMeatTip = d3.tip()
+ 		.attr('class', 'd3-tip')
+ 		.offset([-10, 0])
+ 		.html(function(d, calories) {
+ 			return "<strong>Food group: </strong> <span>" + d + 
+ 			"<br> <strong> Calories: </strong> <span>" +
+ 			Math.round(secondCountryMeatData[d])
+ 		})
+ 		.style("z-index", 2)
+
+ 	sankeysvg.call(firstGrainTip);
+ 	sankeysvg.call(firstMeatTip);
+ 	sankeysvg.call(secondGrainTip);
+ 	sankeysvg.call(secondMeatTip);
+
 	// loop through countries
 	for (i = 0; i < thirdNodeData.length; i++) {
 
@@ -488,11 +564,55 @@ additional information about either the grain- or meat-foodgroup. */
 				// use this data
 				countryData = thirdNodeData[i];
 
+				// save data for both svg's and both foodgroups (for tooltips)
+				if (svgname == "sankeysvg") {
+					if (foodgroup == "grain") {
+						firstCountryCerealData = thirdNodeData[i];
+					}
+					else {
+						firstCountryMeatData = thirdNodeData[i];
+					}
+				}
+				else {
+					if (foodgroup == "grain") {
+						secondCountryCerealData = thirdNodeData[i];
+					}
+					else {
+						secondCountryMeatData = thirdNodeData[i];
+					}
+				}
+
 				// loop through grain- or meat-types
 				for (j = 0; j < categoriesFoodgroup.length; j++) {
 
 					// select node of this foodgroup-type
 					sankeysvg.selectAll("." + categoriesShortcuts[j] + "Rect")
+						.on("mouseover", function(d) {
+							
+							// show right tooltip
+							if (svgname == "sankeysvg") {
+								if (foodgroup == "grain") {
+									firstGrainTip.show(d);
+								}
+								else {
+									firstMeatTip.show(d);
+								}
+							}
+							else {
+								if (foodgroup == "grain") {
+									secondGrainTip.show(d);
+								}
+								else {
+									secondMeatTip.show(d);
+								}
+							}
+						})
+						.on("mouseout", function() {
+							firstGrainTip.hide();
+							firstMeatTip.hide();
+							secondGrainTip.hide();
+							secondMeatTip.hide();
+						})
 						.transition()
 
 						// restore opacity (if it was lowered)

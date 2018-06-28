@@ -14,4 +14,24 @@
 ## Functions
 - Functions are written inside curly brackets: {}
 - The first curly bracket is on the line of the function name, the last one is seperately on the last line.
-- This also applies to for-loops 
+- This also applies to for-loops
+
+## Headers
+Files should have informative headers consisting out of
+	- Name 
+	- Date
+	- Name course
+	- Information about the code
+
+## Comments
+- should be informative
+- should be written above the code
+- should start with "//"
+- should't be too long (crossing the file)
+
+## A consistence use of quotation marks 
+- either " "
+- or	' '
+
+## Identation
+Identation should be consistence and correct 

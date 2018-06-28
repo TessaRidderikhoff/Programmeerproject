@@ -1,4 +1,15 @@
+/******************************************************************************
 
+createScatter.js
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This script contains functions for creating an scatterplot, of which the 
+variables for the x- and y-axis can be chosen. It contains multiple update
+functions for different variables and years. 
+
+******************************************************************************/
 
 function createScatter() {
 /* This function creates a scatterplot in which each dot represents a country, 
@@ -140,7 +151,7 @@ for the colour and size of the dots. */
     var yAxisSelectText = scattersvg
     	.append("text")
     	.attr("class", "yAxisSelectText axisSelect")
-    	.attr("x", scatterWidth/2)
+    	.attr("x", scatterWidth/2 + 35)
     	.attr("y", scatterMargin.top - 17)
     	.text("y-axis: ");
 
@@ -152,7 +163,7 @@ for the colour and size of the dots. */
     	.style("z-index", 1)
     	.style("position", "absolute")
     	.style("left", function() {
-    		return mapWidth + (scatterWidth/2) + 75 + "px"
+    		return mapWidth + (scatterWidth/2) + 110 + "px"
     	})
     	.style("top", "100px")
 

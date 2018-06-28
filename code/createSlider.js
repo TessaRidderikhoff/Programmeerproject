@@ -1,3 +1,16 @@
+/******************************************************************************
+
+createSlider.js
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This script contains functions for creating a slider, to select a year of 
+which the user wants to view the data. It also contains an update function,
+which updates the chosen year for the world map and the scatterplot.
+
+******************************************************************************/
+
 function createSlider() {
 /* This function creates a slider and translates its value to a year between
 1975 and 2013 when the slider is used. */

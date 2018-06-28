@@ -1,3 +1,16 @@
+/******************************************************************************
+
+main.js
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This script waits for the index.html page to load, then loads all required 
+datasets for the graphs. It then calls all necessary functions to show 
+the graphs on the page.
+
+******************************************************************************/
+
 window.onload = function() {
 
 	// wait for all datasets to load
@@ -23,6 +36,7 @@ window.onload = function() {
 function main (error, loadedJSONs) {
 	if (error) throw error;
 
+	// name all datasets
 	geojson = loadedJSONs[0]
 	adultsObese = loadedJSONs[1]
 	femalesObese = loadedJSONs[2]
@@ -39,6 +53,7 @@ function main (error, loadedJSONs) {
 	cerealCalories = loadedJSONs[13]
 	meatPercentage = loadedJSONs[14]
 
+	// initiate all graphs
 	createMap();
 	createSlider();
 	createScatter();
