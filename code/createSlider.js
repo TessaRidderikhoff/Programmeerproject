@@ -1,37 +1,51 @@
 function createSlider() {
+/* This function creates a slider and translates its value to a year between
+1975 and 2013 when the slider is used. */
 
-	timeWidth = 200
-	timeHeight = 50
-	margin = {right: 20, left: 20}
+    // select svg
+    var timesvg = d3.select(".timesvg")
 
-    var svg = d3.select(".timesvg")
+    // get svg properties
+    timeWidth = Number(timesvg.attr("width"));
+    timeHeight = Number(timesvg.attr("height"));
 
+    // create a new slider
     slider1 = new simpleSlider();
 
-    yearInfo = svg.append("text")
+    // create title (displays chosen year)
+    yearInfo = timesvg.append("text")
 		.attr("x", 180)
 		.attr("y", timeHeight/2 + 3)
 		.attr("class", "yearInfo")
 		.text("Year: 2013")
 
+    // create scale to translate value from slider to year
     var xScale = d3.scale.linear()
 		.domain([0, 1])
 		.range([1975, 2013])
 
+    // change year when slider is being used
     slider1.width(150).x(10).y(timeHeight/2).value(1.0).event(function(){
-    	selectedyear = Math.round(xScale(slider1.value()));
-    	year = selectedyear
+    	
+        // change value (between 0-1) to year between 1975-2013
+        selectedyear = Math.round(xScale(slider1.value()));
+    	
+        // update global variable
+        year = selectedyear
+
+        // update title slider
         yearInfo
         	.text("Year: " + selectedyear);
 
-        updateYear(year);
+        updateYear(selectedyear);
     });
 
-    svg.call(slider1);
+    timesvg.call(slider1);
 }
 
 // source: https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01
 function simpleSlider () {
+/* This function creates a slider with values ranging from 0 to 1. */
 
     var width = 100,
         value = 0.5, /* Domain assumes to be [0 - 1] */
@@ -129,6 +143,9 @@ function simpleSlider () {
 }
 
 function updateYear(year) {
+/* This function calls the necessary update functions when the slider is
+changed, to update the world map and scatterplot to the requested year. */
+
     updateMap(year);
     updateScatterYear(year);
 }
