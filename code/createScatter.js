@@ -77,7 +77,7 @@ for the colour and size of the dots. */
         .attr("transform", "translate(" + scatterMargin.left + ", 0)")
 
     // define possible variables for the x-axis
-    var xVariables = ["Calories eaten on average (per day)", "Mean years of schooling", "Gross Domestic Product", "Percentage insuffiently exercise"]
+    var xVariables = ["Calories eaten on average (per day)", "Mean years of schooling (years per person)", "Gross Domestic Product (US Dollar)", "Insuffient physical activity (% of population)"]
  
     // create label for x-dropdown
     var xAxisSelectText = scattersvg
@@ -134,7 +134,7 @@ for the colour and size of the dots. */
     	});
 
     // define possible variables for the y-axis
-    var yVariables = ["Cardiovascular deaths / 100,000 people", "High blood pressure prevalence", "Cancer prevalence"]
+    var yVariables = ["Cardiovascular deaths / 100,000 people", "High blood pressure rate", "Cancer prevalence (% of population)"]
 
     // create label for y-axis dropdown
     var yAxisSelectText = scattersvg
@@ -439,7 +439,7 @@ x- or y-axis of the scatterplot, chosen by the x- or y-dropdown. */
 
 	/* Create x-data-dictionary with selected x-variable dataset */
 
-	if (selectXValue == "Gross Domestic Product") {
+	if (selectXValue == "Gross Domestic Product (US Dollar)") {
 		
 		// select GDP dataset for x-axis data
 		xData = GDP;
@@ -457,7 +457,7 @@ x- or y-axis of the scatterplot, chosen by the x- or y-dropdown. */
 		maxX = 120000;
 	}
 
-	else if (selectXValue == "Percentage insuffiently exercise") {
+	else if (selectXValue == "Insuffient physical activity (% of population)") {
 		xData = insuffientlyActive;
 
 		// only one year is available for this dataset
@@ -474,7 +474,7 @@ x- or y-axis of the scatterplot, chosen by the x- or y-dropdown. */
 		maxX = 70;
 	}
 
-	else if (selectXValue == "Mean years of schooling"){
+	else if (selectXValue == "Mean years of schooling (years per person)"){
 		xData = meanYearsOfSchooling;
 
 		// this dataset has only data available of every five years
@@ -537,7 +537,7 @@ x- or y-axis of the scatterplot, chosen by the x- or y-dropdown. */
 		maxY = 1000;
 	}
 
-	else if (selectYValue == "High blood pressure prevalence") {
+	else if (selectYValue == "High blood pressure rate") {
 		yData = highBloodPressure;
 
 		yDataList = {};
@@ -553,7 +553,7 @@ x- or y-axis of the scatterplot, chosen by the x- or y-dropdown. */
 		maxY = 0.5;
 	}
 
-	else if (selectYValue == "Cancer prevalence") {
+	else if (selectYValue == "Cancer prevalence (% of population)") {
 		yData = cancer;
 
 		// no data in this dataset is available before 1990
