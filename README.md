@@ -1,45 +1,39 @@
-# Programmeerproject Tessa Ridderikhoff (10759697)
+# Obesity around the world
 
-[Pages] (https://tessaridderikhoff.github.io/Programmeerproject/)
+## Link to website
+https://tessaridderikhoff.github.io/Programmeerproject/
+
+### Details
+Tessa Ridderikhoff
+Studentnumber: 10759697
+28-6-2017
 
 ### Problem statement
 A lot of people all over the world struggle with overweight and obesity, which leads to a lot of different theories about the causes and the impact. By comparing the different circumstances of countries with varying obesity prevelances, hopefully more clarity about healthy lifestyles can be given. Everyone who is interested in obesity or the impact of different lifestyles could benefit from this data visualisation.
 
-### Solution
-I would like to visualize the difference between countries in obesity prevalence, and highlight the differences between those countries on the subject of diets, income, education, exercise and so forth, as well as the implications obesity has.
+### World map
+First, we'll view a map of the world, in which the amount of obesity in each country is displayed. Lighter shades of red represent lower percentages of obesity in a country. This visualization helps users to get insight about the distrubution of obesity in the world, and decide which countries to view in the other visualisations.
 
-![](doc/sketch.png)
+![](doc/worldmap.png)
 
-The data visualisation will include:
-- A map of the world that colour-codes the percentage of obesity in that country. (MVP)
-- This world-map can be shown for males, females or both.
-- The world-map can be shown for adults or children.
-- The world-map can be shown for various years.
-- A scatterplot with variables that can be chosen, showing all countries. (MVP)
-- The x-axis variables can be: amount of education, gross domestic product, calories eaten on average, amount of exercise. (MVP)
-- The y-axis variables can be: percentage of obesity, diabetes, heart- and vascular disease, high blood pressure, cancer. (MVP)
-- When clicked on a country in the world map or the scatterplot, a sankey graph is created (or updated if it already existed). The sankey graph displays the amount of calories eaten in the country, and where those calories come from (for example: grains, vegetables, sugar, meat, etc.) (MVP)
+To view the growth of obesity over the last 38 years, the slider can be used, which updates the world map. To only view either female or male data, the checkboxes can be checked and unchecked. The default is both checkboxes checked, which gives the average percentage of obesity for all adults in that country.
 
-### Prerequisites
-Data sources:
-- https://ourworldindata.org/diet-compositions (diet compositions)
-- https://www.worldobesity.org/data/ (obesity)
-- https://data.world/oecd/meat-consumption/workspace/file?filename=meat_consumption.csv (meat consumption)
-- http://hdr.undp.org/en/data (education)
-- https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2016&start=1960&view=chart (GDP)
+### Scatterplot
+For additional information about the countries, we'll look at a scatterplot. For the x-axis, the user can choose various variables, all possible indicators for obesity. For the y-axis, the user can choose variables as well, all possible implications of obesity. The size of the dot represents the level of obesity in that country. The colour of the dot represents the continent that country is in.
 
-External components:
-- D3
-- Bootstrap
+![](doc/scatterplot.png)
 
-Similar visualizations:
+The slider connected to the world map will update the scatterplot as well (if data is available). 
 
-World Obesity has similar visualizations, where a world map can be updated by selecting different variables. These variables can be obesity statistics, impact, drivers and actions. Only one variable is generally shown at the same time. The visualization is useful and clear, but no correlations can be seen since it is not possible to compare for example a driver with the actual amount of obesity in a country directly. 
+### Sankey diagram
+When clicked on a country on the map or in the scatterplot, a Sankey diagram is created, providing information about the eating habits in a country (per day, on average). This way, the eating habits of different countries (and different years) can be viewed and compared.
 
-Our World In Data shows the amount of calories eaten in a country, and where those calories are in (for example, grains, fruits, etc.). They visualize this in multiple stacked line charts. This is very clear, and differences in a country over the years are quickly seen. I will use this as an example, and use this data, but I will use it in a sankey diagram instead. In this sankey diagram, the amount of calories will be split in food group, and these food groups can also be split into the specific types of food. This way, multiple graphs of Our World In Data are combined. 
+![](doc/sankey.png)
 
-Hardest parts:
+When clicked on another country after that, a second Sankey diagram is created. This way, the user can easily compare two countries. The Sankey diagram is not automatically updated when the slider is used, but uses the year the country was representing in the world map or scatterplot when it was clicked. This way, the same country can also be compared over time. When clicked on a country for a third time (or fourth, or fifth..), the first Sankey diagram updates, and so forth.
 
-The hardest part of the visualizations will be the sankey diagram, since this is new to me, and requires the combination of a lot of datasets. Furthermore, it might be possible that not all datasets are available for every year, which has to be checked.
+
+
+
 
 
