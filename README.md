@@ -33,11 +33,12 @@ When clicked on a country on the map or in the scatterplot, a Sankey diagram is 
 When clicked on another country after that, a second Sankey diagram is created. This way, the user can easily compare two countries. The Sankey diagram is not automatically updated when the slider is used, but uses the year the country was representing in the world map or scatterplot when it was clicked. This way, the same country can also be compared over time. When clicked on a country for a third time (or fourth, or fifth..), the first Sankey diagram updates, and so forth.
 
 ### Libraries
-- d3 library
-	- tooltip
-	- queue
-- jQUERY libary
-- Bootstrap library
+- d3 library: https://d3js.org/
+License: BSD 3-Clause "New" or "Revised" License (https://github.com/d3/d3/blob/master/LICENSE)
+- jQUERY libary: https://jquery.com/
+License: MIT license
+- Bootstrap library: https://getbootstrap.com/
+License: MIT license
 
 ### External functions
 - Create slider: https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01
