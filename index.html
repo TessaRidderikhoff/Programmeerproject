@@ -1,3 +1,15 @@
+<!-- 
+
+index.html
+Tessa Ridderikhoff
+10759697
+June 2018
+
+This html page loads all necessary libraries and scripts, and displays 4 graphs
+concerning obesity around the globe.
+
+ -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,11 +24,10 @@
     <!-- link to use tooltips -->
     <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
-
+    <!-- link to jQUERY -->
     <script src="code/jquery-3.3.1.min.js"></script>
 
-
-    <!-- Latest compiled and minified CSS -->
+    <!-- Latest compiled and minified CSS Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
@@ -25,7 +36,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- link to script to create graphs -->
+    <!-- link to scripts to create graphs -->
     <script src="code/main.js" type="text/javascript"></script>
     <script src="code/createMap.js" type="text/javascript"></script>
     <script src="code/createSlider.js" type="text/javascript"></script>
@@ -65,7 +76,10 @@
       </div><!-- /.container-fluid -->
     </nav>
 
+    <!-- create SVG's -->
     <svg width = "600" height = "50" style = "position: absolute; left: 30px; top: 50px;" class = "timesvg">
+        
+        <!-- create checkboxes for gender selection -->
         <div class="gender-checkbox" style = "position: absolute; left: 500px; top: 65px">
           <input type="checkbox" class="form-check-input" id="femaleCheckbox" value = "Female" onchange = updateMapGender(value) checked>
           <label class="form-check-label" for="femaleCheckbox">Female</label>
@@ -81,9 +95,8 @@
     <svg width = "700" height = "350" style = "position: absolute; left: 630px; top: 50px;" class = "scattersvg"></svg>
 
     <svg width = "600" height = "400" style = "position: absolute; left: 30px; top: 430px;" class = "sankeysvg"></svg>  
-    <svg width = "600" height = "400" style = "position: absolute; left: 630px; top: 430px;" class = "secondsankeysvg">
-        
 
-    </svg>    
+    <svg width = "600" height = "400" style = "position: absolute; left: 630px; top: 430px;" class = "secondsankeysvg"></svg>  
+
   </body>
 </html>
