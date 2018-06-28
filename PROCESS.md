@@ -176,3 +176,30 @@
 - Pages of "About the data" and "Sources"
 - Tooltips of sankey diagram
 
+## Wednesday 27-6
+
+### Done
+- Commented rest of files
+- Improved createSankey (combined two functions)
+- Worked on report
+
+### To do
+- Labels axes
+- Tooltips Sankey
+- Report
+- Readme
+- Sources
+- Github pages
+
+## Thursday 28-6
+
+### Done
+- Finished report
+- Finished README
+- Fixed tooltips of Sankey diagram (easier than expected)
+- Labeled axes
+- Created sources page
+- Created link to website
+
+### To do
+- Product video
